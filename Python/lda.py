@@ -34,7 +34,7 @@ class LDA_reducer:
             self.Sw += np.dot(inner.T,inner)
 
         # Calculate omega
-        self.omega = np.dot( np.linalg.inv( self.Sw ), self.Sb)
+        self.omega = np.dot( np.linalg.pinv( self.Sw ), self.Sb)
 
         # Get eigen vectors
         self.eig_val , self.eig_vec = np.linalg.eig(self.omega)
