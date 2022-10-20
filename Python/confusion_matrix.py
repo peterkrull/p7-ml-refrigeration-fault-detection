@@ -14,7 +14,7 @@ def confusion_matrix(conf_matrix : np.matrix, axis_ticks : tuple = None, title :
         if len(axis_ticks) == 2:
             axs.set_xticks(axis_ticks[0],axis_ticks[1])
             axs.set_yticks(axis_ticks[0],axis_ticks[1])
-        elif len(axis_ticks) == 2:
+        elif len(axis_ticks) == 1:
             axs.set_xticks(axis_ticks,axis_ticks)
             axs.set_yticks(axis_ticks,axis_ticks)
     else:
