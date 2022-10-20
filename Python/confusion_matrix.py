@@ -1,16 +1,15 @@
 import matplotlib.pyplot as plt
 import numpy as np
-import types as t
 
-def confusion_matrix(conf_matrix : np.matrix, axis_ticks : tuple = None, title : str = "Confusion matrix", normalize = True,save_fig_name : str = None):
-    plt.imshow(np.sqrt(conf_matrix),cmap="Greens")
+def confusion_matrix(conf_matrix : np.matrix, axis_ticks : tuple = None, title : str = "Confusion matrix", normalize = True,save_fig_name : str = None, figsize : tuple = (10,10)):
+    plt.imshow(np.sqrt(conf_matrix),cmap="Greens",figsize=figsize)
     plt.xlabel("Predicted class")
     plt.ylabel("True class")
     plt.title(title)
 
     width, height = conf_matrix.shape
 
-    if not isinstance( axis_ticks , t.NoneType ):
+    if type(axis_ticks) != type(None):
         if len(axis_ticks) == 2:
             plt.xticks(axis_ticks[0],axis_ticks[1])
             plt.yticks(axis_ticks[0],axis_ticks[1])
