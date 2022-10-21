@@ -14,9 +14,12 @@ def confusion_matrix(conf_matrix : np.matrix, axis_ticks : tuple = None, title :
         if len(axis_ticks) == 2:
             axs.set_xticks(axis_ticks[0],axis_ticks[1])
             axs.set_yticks(axis_ticks[0],axis_ticks[1])
-        else:
+        elif len(axis_ticks) == 1:
             axs.set_xticks(axis_ticks,axis_ticks)
             axs.set_yticks(axis_ticks,axis_ticks)
+    else:
+        axs.set_xticks([x for x in range(width)],[x for x in range(width)])
+        axs.set_yticks([x for x in range(height)],[x for x in range(height)])
 
     for x in range(width):
         for y in range(height):
@@ -38,5 +41,5 @@ def confusion_matrix(conf_matrix : np.matrix, axis_ticks : tuple = None, title :
 if __name__ == "__main__":
     
     mat = np.ones((20,20))
-    fig,axs = confusion_matrix(mat,figsize=(10,10))
+    fig,axs = confusion_matrix(mat)
     plt.show()
