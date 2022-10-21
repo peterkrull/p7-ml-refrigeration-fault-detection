@@ -1,17 +1,21 @@
 import matplotlib.pyplot as plt
 import numpy as np
 
-def confusion_matrix(conf_matrix : np.matrix, axis_ticks : tuple = None, title : str = "Confusion matrix", normalize = True,save_fig_name : str = None, figsize : tuple = (10,10)):
+def confusion_matrix(conf_matrix : np.matrix, axis_ticks : tuple = None, title : str = "Confusion matrix", normalize = True,save_fig_name : str = None, figsize : tuple = (10,10),eval_labels = True):
     
     # Calculate accuracy of confusion matrix
     accuracy = np.sum(np.diag(conf_matrix))/np.sum(conf_matrix)
     
+    each_accuracy = np.diag(conf_matrix)/np.sum(conf_matrix,axis=1)
+    
     # Setup figure
     fig , axs = plt.subplots(figsize=figsize)
+   
+   
     axs.imshow(np.sqrt(conf_matrix),cmap="Greens")
     axs.set_xlabel("Predicted class")
     axs.set_ylabel("True class")
-    axs.set_title(f"{title} : Accuracy {round(accuracy*100,2)}%")
+    axs.set_title(f"{title} : Accuracy {round(accuracy*100,3)}%")
 
     width, height = conf_matrix.shape
 
@@ -30,14 +34,21 @@ def confusion_matrix(conf_matrix : np.matrix, axis_ticks : tuple = None, title :
     # Apply numbers to matrix fields
     for x in range(width):
         for y in range(height):
+            
+            if eval_labels:
+                text = 'perfect' if each_accuracy[y] == 1.0 else (str(round(each_accuracy[y]*100,2)) + '%')
+                axs.text(width,y,f"{text}",color="green" if each_accuracy[y] > 0.95 else "black")
+            
+            rounded = round(int(conf_matrix[x][y]) / sum(conf_matrix[x]),2)
+            
             if normalize:
-                axs.annotate(str(round(int(conf_matrix[x][y]) / sum(conf_matrix[x]),2)), xy=(y, x), 
+                text = rounded    
+            else:
+                text = int(conf_matrix[x][y])
+                
+            axs.annotate(str(text), xy=(y, x), 
                     horizontalalignment='center',
-                    verticalalignment='center')
-            else :
-                axs.annotate(str(int(conf_matrix[x][y])), xy=(y, x), 
-                    horizontalalignment='center',
-                    verticalalignment='center')
+                    verticalalignment='center',color= "white" if rounded > 0.7 else "black")
                 
     # Optional, export figure
     if save_fig_name:
