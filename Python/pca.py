@@ -28,7 +28,7 @@ class PCA_reducer:
 
         # Determine appropriate label definition
         if self.target_id in data: target_id = self.target_id
-        
+
         # Extract labels and drop
         if target_id:
             labels = data[target_id]
