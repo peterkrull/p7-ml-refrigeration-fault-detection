@@ -18,7 +18,9 @@ def classifier(x:pd.DataFrame,m:list[np.array],s:list[np.array],target:str = Non
 
     Returns:
         `np.array`: array of estimated classes
+        
         or, if target is supplied
+        
         `np.array` , `np.array`: array of estimated classes and confusion matrix
     """
     start = time.time()
@@ -36,12 +38,14 @@ def classifier(x:pd.DataFrame,m:list[np.array],s:list[np.array],target:str = Non
         est = bayesian.classifier_single(X,M,S)
         
     if target:
+        
+        # Calculate confusion matrix
         tru = x.get('target')
-        conf_matrix2 = np.zeros((len(tru.unique()),len(tru.unique())))
-        for (t,e) in zip(tru,est):
-            conf_matrix2[int(t),int(e)] += 1
+        conf_matrix = np.zeros((len(tru.unique()),len(tru.unique())), dtype=int)
+        np.add.at(conf_matrix, (tru.to_numpy(dtype = int), est), 1)
+        
         print(f"Classification took : {round(time.time()-start,3)} seconds")
-        return est,conf_matrix2
+        return est,conf_matrix
     else:
         print(f"Classification took : {round(time.time()-start,3)} seconds")
         return est
