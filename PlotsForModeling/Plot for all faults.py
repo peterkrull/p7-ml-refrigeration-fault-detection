@@ -8,6 +8,9 @@ import os
 #   In this program you can view all datasets by pressing left and right arrows
 #
 
+
+fault_description = ['Normal operation','Tsuc positive offset','Tsup positive offset','Tret positive offset','Tdis positive offset','Pdis positive offset','Psuc positive offset','Compr low perf','Loose exp valve','Evap fan low perf','Cond fan low perf','Tsuc negative offset','Tsup negative offset','Tret positive offset','Tdis negative offset','Pdis negative offset','Psuc negative offset','Broken compressor','Broken exp valve', 'Blocked condenser fan']
+
 #starting dataset
 n = 17
 
@@ -35,7 +38,7 @@ def redraw_Figure(n):
     axs.clear()
     axs.plot(data)
     plt.legend(data.columns, bbox_to_anchor=(1, 1))
-    plt.title(f'Fault {n}')
+    plt.title(f'Fault {n}: {fault_description[n]}')
     plt.xlabel('Press left and right arrows to change datasets')
     fig.canvas.draw()
 
@@ -51,7 +54,7 @@ fig.canvas.mpl_connect('key_press_event', on_press)
 
 axs.plot(data)
 plt.legend(data.columns, bbox_to_anchor=(1, 1))#, loc="center left")
-plt.title(f'Fault {n}')
+plt.title(f'Fault {n}: {fault_description[n]}')
 plt.xlabel('Press left and right arrows to change datasets')
 
 plt.show()
