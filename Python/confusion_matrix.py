@@ -1,3 +1,4 @@
+import sklearn.preprocessing as skp
 import matplotlib.pyplot as plt
 import numpy as np
 
@@ -6,13 +7,17 @@ def confusion_matrix(conf_matrix : np.matrix, axis_ticks : tuple = None, title :
     # Calculate accuracy of confusion matrix
     accuracy = np.sum(np.diag(conf_matrix))/np.sum(conf_matrix)
     
+    # Accuracy of each class
     each_accuracy = np.diag(conf_matrix)/np.sum(conf_matrix,axis=1)
     
     # Setup figure
     fig , axs = plt.subplots(figsize=figsize)
    
+    # Normalize rows to add up to one
+    image_matrix = skp.normalize(conf_matrix,axis=1,norm='l1')
    
-    axs.imshow(np.sqrt(conf_matrix),cmap="Greens")
+    # Display image and set labels and title
+    axs.imshow(np.sqrt(image_matrix),cmap="Greens")
     axs.set_xlabel("Predicted class")
     axs.set_ylabel("True class")
     axs.set_title(f"{title} : Accuracy {round(accuracy*100,3)}%")
@@ -39,16 +44,14 @@ def confusion_matrix(conf_matrix : np.matrix, axis_ticks : tuple = None, title :
                 text = 'perfect' if each_accuracy[y] == 1.0 else (str(round(each_accuracy[y]*100,2)) + '%')
                 axs.text(width,y,f"{text}",color="green" if each_accuracy[y] > 0.95 else "black")
             
-            rounded = round(int(conf_matrix[x][y]) / sum(conf_matrix[x]),2)
-            
             if normalize:
-                text = rounded    
+                num = round(image_matrix[x,y],2)
             else:
-                text = int(conf_matrix[x][y])
+                num = int(conf_matrix[x,y])
                 
-            axs.annotate(str(text), xy=(y, x), 
+            axs.annotate(str(num), xy=(y, x), 
                     horizontalalignment='center',
-                    verticalalignment='center',color= "white" if rounded > 0.7 else "black")
+                    verticalalignment='center',color= "white" if image_matrix[x,y] > 0.6 else "black")
                 
     # Optional, export figure
     if save_fig_name:
