@@ -6,7 +6,7 @@ import numpy as np
 class LDA_reducer:
 
     # Initialize the LDA by using a dataset
-    def __init__(self, data : pd.DataFrame, dims : int, target_id : str, frac : int = 1) -> None:
+    def __init__(self, data : pd.DataFrame, dims : int, target_id : str, frac : int = 1, scree_plot : bool = True) -> None:
 
         # Save target id of data
         self.target_id = target_id
@@ -48,11 +48,12 @@ class LDA_reducer:
         self.W = np.real(self.eig_vec[:,0:dims])
 
         # Plot largest eigen values
-        plt.figure(figsize=(5,5))
-        if len(self.eig_vec) > 20:
-            plt.bar([x for x in range(1,20+1)],np.real(self.eig_val[0:20]))
-        else:
-            plt.bar([x for x in range(1,len(self.eig_vec)+1)],np.real(self.eig_val[0:len(self.eig_vec)]))
+        if scree_plot:
+            plt.figure(figsize=(5,5))
+            if len(self.eig_vec) > 20:
+                plt.bar([x for x in range(1,20+1)],np.real(self.eig_val[0:20]))
+            else:
+                plt.bar([x for x in range(1,len(self.eig_vec)+1)],np.real(self.eig_val[0:len(self.eig_vec)]))
 
         s = sum(np.real(self.eig_val))
         print(f"Preserving {round(sum(np.real(self.eig_val[0:dims]))/s*100,2)}% of variance",)
