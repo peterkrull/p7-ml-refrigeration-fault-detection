@@ -27,19 +27,21 @@ def on_press(event):
 
     sys.stdout.flush()
     if event.key == 'left':
-        n-=1
+        n = n-1 if n>0 else n
         redraw_Figure(n,offset)
         
     if event.key == 'right':
-        n=n+1
+        n = n+1 if n<20 else n
         redraw_Figure(n,offset)
 
     if event.key == 'up':
-        offset+=1
+        offset = offset+1 if offset<18 else offset
         redraw_Figure(n,offset)
 
+
+
     if event.key == 'down':
-        offset-=1
+        offset = offset-1 if offset>0 else offset
         redraw_Figure(n,offset)
         
 def redraw_Figure(n,offset):

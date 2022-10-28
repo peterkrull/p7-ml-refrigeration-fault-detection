@@ -25,11 +25,11 @@ def on_press(event):
 
     sys.stdout.flush()
     if event.key == 'left':
-        n-=1
+        n = n-1 if n>0 else n
         redraw_Figure(n)
         
     if event.key == 'right':
-        n=n+1
+        n = n+1 if n<20 else n
         redraw_Figure(n)
         
 def redraw_Figure(n):
