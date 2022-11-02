@@ -1,12 +1,17 @@
 import matplotlib.pyplot as plt
+from matplotlib import rc
 import numpy as np
 import tikzplotlib as tpl
+
+rc('font', **{'family': 'serif', 'serif': ['Computer Modern']})
+rc('text', usetex=True)
+plt.rc('text.latex', preamble=r'\usepackage{amsmath}')
 
 #data = np.matrix('1.5,1;0.5,2;2,.5; 1,2;1,.5')
 data = np.matrix('0.6, 0.75, 1.4, 1.6, 2, 2.3,1.85, 2.15, 2.5, 2.8, 2.95, 3.25; 0.5, 0.4, 0.55, 0.75, 0.8, 0.95, 1.5, 1.75, 2.4, 2.65, 1.8, 2.85').transpose()
 data = data.T
 
-plt.scatter(data[0,:].tolist(), data[1,:].tolist())
+plt.scatter(data[0,:].tolist(), data[1,:].tolist(), label = r"$\boldsymbol{x}$")
 #plt.show()
 
 sample_mean = data.mean(1)
@@ -33,14 +38,17 @@ coordinate_along_w = np.matmul(np.matrix(w).T, np.matrix(transformed_coordinate)
 print("\n coordinate along w: \n", str(coordinate_along_w))
 print("\n Size coordinate_along_w: \n", coordinate_along_w.shape)
 
-plt.scatter(coordinate_along_w[0,:].tolist(), coordinate_along_w[1,:].tolist(), color = "orange",zorder = 10)
+plt.scatter(coordinate_along_w[0,:].tolist(), coordinate_along_w[1,:].tolist(), color = "orange",zorder = 10, label = r"$\hat x$")
 plt.plot(coordinate_along_w[0,:].T, coordinate_along_w[1,:].T, color = "orange",zorder = 9)
 
 len_trans = max(transformed_coordinate.shape)
 for i in range(0, len_trans):
     plt.plot([coordinate_along_w[0,i], data[0,i]], [coordinate_along_w[1,i], data[1,i]], "--", color = "grey")
     print(np.dot([coordinate_along_w[0,i]-data[0,i] ,coordinate_along_w[1,i]-data[1,i]], w))
+
 plt.axis('equal')
+plt.legend()
+plt.savefig("pcaChapter/PCA_example_py.pdf")
 
 plt.show()
 #tpl.save("PCA_example_py.tex")

@@ -1,9 +1,14 @@
 import matplotlib.pyplot as plt
+from matplotlib import rc
 import numpy as np
 import pandas as pd
 import sys
 sys.path.append(sys.path[0] + "\..\..")
 from Python import lda
+
+rc('font', **{'family': 'serif', 'serif': ['Computer Modern']})
+rc('text', usetex=True)
+plt.rc('text.latex', preamble=r'\usepackage{amsmath}')
 
 x1=[0.6, 0.75, 1.4, 1.6, 2, 2.3]
 y1=[0.5, 0.4, 0.55, 0.75, 0.8, 0.95]
@@ -11,8 +16,8 @@ x2=[1.85, 2.15, 2.5, 2.8, 2.95, 3.25]
 y2=[1.5, 1.75, 2.4, 2.65, 1.8, 2.85]
 
 colors = ["", ""]
-colors[0] = plt.scatter(x1, y1,zorder = 10).get_facecolor()
-colors[1] = plt.scatter(x2, y2, zorder = 9).get_facecolor()
+colors[0] = plt.scatter(x1, y1,zorder = 10, label = "Class 1").get_facecolor()
+colors[1] = plt.scatter(x2, y2, zorder = 9, label = "Class 2").get_facecolor()
 
 
 #plt.show()
@@ -72,7 +77,7 @@ plt.plot(w_line['x'].to_numpy(),w_line['y'].to_numpy(),  color = 'grey')
 #    print(plot_points[1])
 #    plt.scatter(plot_points[0].to_numpy(), plot_points[1].to_numpy())
 
-
+plt.legend()
 plt.axis('equal')
 plt.savefig("Python/LDA_plots/LDA_plot_example.pdf")
 plt.show()
