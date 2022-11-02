@@ -17,13 +17,17 @@ offset = 0
 
 def filepath(n):#get the filepaths from numbers
     if n == 0:
-        return "TrainingData/Ntrain1.csv"
+        return "../TrainingData/Ntrain1.csv"
     else:
-        return f"TrainingData/Ftrain{n}.csv"
+        return f"../TrainingData/Ftrain{n}.csv"
 
 def on_press(event):
     global n #cuz it only works like this
+<<<<<<< Updated upstream
     global offset
+=======
+    print(event.key)
+>>>>>>> Stashed changes
 
     sys.stdout.flush()
     if event.key == 'left':
