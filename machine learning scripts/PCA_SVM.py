@@ -6,8 +6,10 @@ from Python import confusion_matrix
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
+import matplotlib as mpl
 import sklearn.svm as svm
 import json as js
+import itertools 
 
 #Load training data from file
 
@@ -32,6 +34,25 @@ def no_noise(train_data: pd.DataFrame, val_data: pd.DataFrame, classes: pd.DataF
     #Dim reduce training data & val data
     trans_data = pca_class.transform(train_data, 'target')
     val_red_data = pca_class.transform(val_data, 'target')
+
+    print(trans_data)
+    error_colors = js.load(open(f'Python/error_color_coding.json'))
+    # error_colors = iter([plt.cm.tab20(i) for i in range(20)])
+    # error_colors = list(error_colors)
+    # #itertools.chain(error_colors, ((0.0, .35, .7, .01)))
+    # error_colors.append(tuple((0.0, .35, .85, 1)))
+    # for i in error_colors:
+    #     print("tuple" + str(i))
+
+    print(error_colors)
+
+    for target in trans_data['target'].unique():
+        print(target)
+        plt.scatter(trans_data.loc[trans_data["target"] == target][0],trans_data.loc[trans_data["target"] == target][1], label = "Fault " + str(target), color = error_colors[str(target)]['color'])
+
+    lgd = plt.legend(bbox_to_anchor=(1, -0.125), loc="lower left")
+    plt.savefig("machine learning scripts/pca_reduc.pdf",bbox_extra_artists=(lgd,), bbox_inches='tight')
+    plt.show()
 
 
     #Fit svm model to dim red data
@@ -97,6 +118,7 @@ if __name__ == "__main__":
     training_data , validation_data = get_valData(training_data)
 
     no_noise(training_data, validation_data, class_labels)
-    with_noise(training_data, validation_data, class_labels)
+    print(plt.cm.get_cmap('tab20c'))
+    #with_noise(training_data, validation_data, class_labels)
 
 
