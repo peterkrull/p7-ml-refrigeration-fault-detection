@@ -1,6 +1,8 @@
 import matplotlib.pyplot as plt
 import numpy as np
 
+
+
 def confusion_matrix(conf_matrix : np.matrix, axis_ticks : tuple = None, title : str = "Confusion matrix", normalize = True,save_fig_name : str = None, figsize : tuple = (10,10),eval_labels = True):
     
     # Calculate accuracy of confusion matrix
