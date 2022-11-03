@@ -5,9 +5,12 @@ def confusion_matrix(conf_matrix : np.matrix, axis_ticks : tuple = None, title :
     
     # Calculate accuracy of confusion matrix
     accuracy = np.sum(np.diag(conf_matrix))/np.sum(conf_matrix)
-    
-    each_accuracy = np.diag(conf_matrix)/np.sum(conf_matrix,axis=1)
-    
+
+    each_accuracy = np.zeros(conf_matrix.shape[0])
+    for i, (num, denum) in enumerate(zip(np.diag(conf_matrix), np.sum(conf_matrix, axis = 1))):
+        if denum != 0:
+            each_accuracy[i] = num/denum
+
     # Setup figure
     fig , axs = plt.subplots(figsize=figsize)
    
@@ -39,7 +42,9 @@ def confusion_matrix(conf_matrix : np.matrix, axis_ticks : tuple = None, title :
                 text = 'perfect' if each_accuracy[y] == 1.0 else (str(round(each_accuracy[y]*100,2)) + '%')
                 axs.text(width,y,f"{text}",color="green" if each_accuracy[y] > 0.95 else "black")
             
-            rounded = round(int(conf_matrix[x][y]) / sum(conf_matrix[x]),2)
+            rounded = 0.0
+            if sum(conf_matrix[x]) != 0:
+                rounded = round(int(conf_matrix[x][y]) / sum(conf_matrix[x]),2)
             
             if normalize:
                 text = rounded    
