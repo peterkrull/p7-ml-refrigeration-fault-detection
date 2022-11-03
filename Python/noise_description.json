@@ -3,14 +3,14 @@
     "Psuc":    {"mean" : 0, "var" : 0},
     "T0":      {"mean" : 0, "var" : 0},
     "Tc":      {"mean" : 0, "var" : 0},
-    "Tdis":    {"mean" : 0, "var" : 2},
-    "Tret":    {"mean" : 0, "var" : 2},
-    "Tsuc":    {"mean" : 0, "var" : 2},
+    "Tdis":    {"mean" : 0, "var" : 1},
+    "Tret":    {"mean" : 0, "var" : 1},
+    "Tsuc":    {"mean" : 0, "var" : 1},
     "Tsh":     {"mean" : 0, "var" : 0},
-    "Tsup":    {"mean" : 0, "var" : 2},
+    "Tsup":    {"mean" : 0, "var" : 1},
     "CondFan": {"mean" : 0, "var" : 0},
     "CprPower":{"mean" : 0, "var" : 0},
     "Density": {"mean" : 0, "var" : 0},
     "Tset":    {"mean" : 0, "var" : 0},
-    "Tamb":    {"mean" : 0, "var" : 2}
+    "Tamb":    {"mean" : 0, "var" : 1}
 }
