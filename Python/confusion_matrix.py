@@ -59,7 +59,7 @@ def confusion_matrix(conf_matrix : np.matrix, axis_ticks : tuple = None, title :
                 
     # Optional, export figure
     if save_fig_name:
-        axs.get_figure().savefig(save_fig_name,format='pdf')
+        axs.get_figure().savefig(save_fig_name,format='pdf',bbox_inches='tight',)
         
     return fig,axs
 
