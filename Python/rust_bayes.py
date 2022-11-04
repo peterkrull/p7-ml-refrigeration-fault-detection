@@ -1,78 +1,61 @@
-import pandas as pd
 import numpy as np
-import time
-import sys
 
-# sys.path.append("/home/peterkrull/multivariate_gauss_pdf/target/release")
 import rust_bayes_module as bayes
 
-def classifier(x:pd.DataFrame,m:list[np.array],s:list[np.array],p:list[float] = None,target:str = None,uniform_priors=False):
-    """Bayesian classification of entire data sets. Built in rust for fearless concurrency.
+# Basic Python interface for rust module
+class GaussianOptimal:
 
-    Args:
-        `x (pd.DataFrame)`: Pandas dataframe containing the samples (row-wise) to classify.
-        `m (list[np.array])`: Python list with class means as numpy arrays
-        `s (list[np.array])`: Python list with class covariances as numpy arrays
-        `p (list[float], optional)`: Python list with priors, can be determined form data if `target` is supplied
-        `target (str, optional)`: Key of column containing class labels for all samples. Defaults to None.
+    def fit(self, X:'np.ndarray', y:'np.ndarray', p:'np.ndarray' = None, c:'np.ndarray' = None):
+        """Determines the means, covariances and priors for the provided data set
 
-    Returns:
-        `np.array`: array of estimated classes
-        or, if target is supplied
-        `np.array` , `np.array`: array of estimated classes and confusion matrix
-    """
-    start = time.time()
-    if target:
-        X = np.ascontiguousarray(x.drop(target,axis=1).to_numpy())
-    else:
-        X = np.ascontiguousarray(x.to_numpy())
+        Args:
+            `X (np.ndarray)`: Data set, samples as rows
+            `y (np.ndarray)`: Labels for data set
+            `p (np.ndarray, optional)`: Priors Defaults to None.
+            `c (np.ndarray, optional)`: Subset of classes to use. Defaults to None.
+        """
         
-    M = np.ascontiguousarray(m)
-    S = np.ascontiguousarray(s)
-    P = np.ascontiguousarray(p)
+        # If DataFrame is proveded, convert into numpy array
+        if type(X).__name__ == 'DataFrame' : X = np.array(X)
+        if type(y).__name__ == 'DataFrame' : y = np.array(y).flatten()
+        if type(p).__name__ == 'DataFrame' : p = np.array(p).flatten()
+        if type(c).__name__ == 'DataFrame' : c = np.array(c).flatten()
+        
+        # Check dimensions        
+        if (l1:=len(X)) != (l2:=len(y)) :
+            raise ValueError(f"Length of X and y do not match : len(X):{l1} != len(y):{l2}")
+        
+        # Get sorted list of all classses in data set        
+        self.classes = np.unique(y) if c == None else c
+        
+        # Save dimensionality
+        self.dim = X.shape[1]
     
-    # Determine priors
-    if type(p).__module__ == np.__name__:
-        P = np.ascontiguousarray(p,dtype = float)
-    elif target and not uniform_priors:
-        classes = np.sort(x['target'].unique())
-        P = np.ascontiguousarray([len(x[x[target] == c]) for c in classes],dtype = float)
-        print(P)
-        print(f"Warning : No priors were supplied, assuming priors from target column :\n{P/len(x['target'])}")
-    else:
-        if uniform_priors:
-            print("Using uniform priors")
-        else:
-            print("Warning : No priors were supplied, assuming uniform priors.")
-        P = np.ascontiguousarray([1.0]*S.shape[0],dtype = float)
-           
-    est = bayes.classifier_multi(X,M,S,P)
+        # Calculate mean, covariance and priors of data set
+        self.M = np.ascontiguousarray( [np.mean(X[y == c],axis=0) for c in self.classes], dtype = float )
+        self.S = np.ascontiguousarray( [np.cov(X[y == c],rowvar=False) for c in self.classes], dtype = float )
+        self.P = np.ascontiguousarray( [len(y[y == c]) for c in self.classes], dtype = float ) if p == None else p
         
-    if target:
+        if (cond:=max([np.linalg.cond(s) for s in self.S])) > 1000:
+            print(f"Warning: High conditioning number : {round(cond,2)}")
         
-        # Calculate confusion matrix
-        tru = x.get('target')
-        conf_matrix = np.zeros((len(tru.unique()),len(tru.unique())), dtype=int)
-        np.add.at(conf_matrix, (tru.to_numpy(dtype = int), est), 1)
-        
-        print(f"Classification took : {round(time.time()-start,3)} seconds")
-        return est,conf_matrix
-    else:
-        print(f"Classification took : {round(time.time()-start,3)} seconds")
-        return est
-    
+    def predict(self,X:'np.ndarray', verbose = True) -> 'np.ndarray':
+        """Predict the class of the given sample(s)
 
-# Basic 
-class classifier_class:
+        Args:
+            `X (np.ndarray)`: Data set to classify
+            `verbose (bool)`: Print message with classification time. Defaults to True
 
-    def fit(self,X:pd.DataFrame, y:pd.DataFrame):
+        Returns:
+            `(np.ndarray)`: _description_
+        """
         
-        classes = np.sort(y.unique())
+        # If DataFrame is proveded, convert into numpy array
+        if type(X).__name__ == 'DataFrame' : X = np.array(X)
         
-        self.M = [X[y == c].mean() for c in classes]
-        self.S = [X[y == c].cov() for c in classes]
-        self.P = np.ascontiguousarray([len(y[y == c]) for c in classes])
+        # Check if dimensions of new data set mathces model        
+        if (d1:=self.dim) != (d2:=X.shape[1]) :
+            raise ValueError(f"Incorrect number of features for this model. Expected {d1}, got {d2}")
         
-    def predict(self,X:pd.DataFrame):
-        return classifier(X,self.M,self.S,self.P)
-        
+        # Call rust module to make predictions
+        return self.classes[bayes.classifier( np.ascontiguousarray(X), self.M, self.S, self.P , verbose )]
