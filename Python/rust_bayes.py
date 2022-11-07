@@ -3,7 +3,7 @@ import numpy as np
 import rust_bayes_module as bayes
 
 # Basic Python interface for rust module
-class classifier:
+class GaussianOptimal:
 
     def fit(self, X:'np.ndarray', y:'np.ndarray', p:'np.ndarray' = None, c:'np.ndarray' = None):
         """Determines the means, covariances and priors for the provided data set
@@ -16,10 +16,10 @@ class classifier:
         """
         
         # If DataFrame is proveded, convert into numpy array
-        X = np.array(X)
-        y = np.squeeze(y)
-        p = np.squeeze(p)
-        c = np.squeeze(c)
+        if type(X).__name__ == 'DataFrame' : X = np.array(X)
+        if type(y).__name__ == 'DataFrame' : y = np.array(y).flatten()
+        if type(p).__name__ == 'DataFrame' : p = np.array(p).flatten()
+        if type(c).__name__ == 'DataFrame' : c = np.array(c).flatten()
         
         # Check dimensions        
         if (l1:=len(X)) != (l2:=len(y)) :
@@ -51,7 +51,7 @@ class classifier:
         """
         
         # If DataFrame is proveded, convert into numpy array
-        X = np.array(X)
+        if type(X).__name__ == 'DataFrame' : X = np.array(X)
         
         # Check if dimensions of new data set mathces model        
         if (d1:=self.dim) != (d2:=X.shape[1]) :
