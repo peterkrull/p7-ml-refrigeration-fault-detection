@@ -34,9 +34,10 @@ class classifier:
         self.M = [np.mean(X[y == c],axis=0) for c in self.classes]
         self.S = [np.cov(X[y == c],rowvar=False) for c in self.classes]
         self.P = [len(y[y == c]) for c in self.classes] if p == None else p
-        
+        '''
         if (cond:=max([np.linalg.cond(s) for s in self.S])) > 1000:
             print(f"Warning: High conditioning number : {round(cond,2)}")
+        '''
         
     def predict(self,X:'np.ndarray', verbose = True) -> 'np.ndarray':
         """Predict the class of the given sample(s)
