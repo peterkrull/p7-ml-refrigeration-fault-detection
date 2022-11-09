@@ -1,18 +1,15 @@
 import matplotlib.pyplot as plt
 from matplotlib import rc
 import numpy as np
-import tikzplotlib as tpl
 
 rc('font', **{'family': 'serif', 'serif': ['Computer Modern']})
 rc('text', usetex=True)
 plt.rc('text.latex', preamble=r'\usepackage{amsmath}')
 
-#data = np.matrix('1.5,1;0.5,2;2,.5; 1,2;1,.5')
 data = np.matrix('0.6, 0.75, 1.4, 1.6, 2, 2.3,1.85, 2.15, 2.5, 2.8, 2.95, 3.25; 0.5, 0.4, 0.55, 0.75, 0.8, 0.95, 1.5, 1.75, 2.4, 2.65, 1.8, 2.85').transpose()
 data = data.T
 
 plt.scatter(data[0,:].tolist(), data[1,:].tolist(), label = r"$\boldsymbol{x}$")
-#plt.show()
 
 sample_mean = data.mean(1)
 sample_cov = np.cov(data)
@@ -50,8 +47,7 @@ print("w dot mean = " + str(np.matmul(w,sample_mean)))
 
 plt.axis('equal')
 plt.legend()
-plt.savefig("pcaChapter/PCA_example_py.pdf")
+plt.savefig("PCA_Plot.pdf")
 
-plt.show()
-#tpl.save("PCA_example_py.tex")
+
 

@@ -2,9 +2,7 @@ import matplotlib.pyplot as plt
 from matplotlib import rc
 import numpy as np
 import pandas as pd
-import sys
-sys.path.append(sys.path[0] + "\..\..")
-from Python import lda
+from lda import LDA_reducer
 
 rc('font', **{'family': 'serif', 'serif': ['Computer Modern']})
 rc('text', usetex=True)
@@ -19,9 +17,6 @@ colors = ["", ""]
 colors[0] = plt.scatter(x1, y1,zorder = 10, label = "Class 1").get_facecolor()
 colors[1] = plt.scatter(x2, y2, zorder = 9, label = "Class 2").get_facecolor()
 
-
-#plt.show()
-
 train_data = pd.DataFrame()
 data_head = ["x","y","target"]
 
@@ -34,25 +29,22 @@ train_data = train_data.drop('index', axis = 1)
 print(train_data)
 
 
-lda = lda.LDA_reducer(train_data, 1, "target", scree_plot = False)
+lda1 = LDA_reducer(train_data, 1, "target", scree_plot = False)
 
-trans_data = lda.transform(train_data, target_id = "target")
+trans_data = lda1.transform(train_data, target_id = "target")
 print(trans_data)
 
 
-trans_point = np.matmul(lda.W, trans_data.drop('target', axis = 1).to_numpy().transpose()).transpose()
+trans_point = np.matmul(lda1.W, trans_data.drop('target', axis = 1).to_numpy().transpose()).transpose()
 trans_point = pd.DataFrame(trans_point, columns = ['x', 'y'])
 trans_point['target'] = trans_data['target']
 
 print(trans_point)
 
-
 for i in range(trans_point.shape[0]):
     print(i)
     print(trans_point.iloc[0])
     plt.plot([trans_point.iloc[i]['x'],train_data.iloc[i]['x']], [trans_point.iloc[i]['y'],train_data.iloc[i]['y']], "--", color = 'grey')
-
-
 
 for i in range (2):
     plot_points = trans_point.loc[trans_point["target"] == i]    
@@ -62,22 +54,7 @@ for i in range (2):
 w_line = trans_point.drop('target', axis = 1)
 plt.plot(w_line['x'].to_numpy(),w_line['y'].to_numpy(),  color = 'grey')
 
-# for index, point in train_data.apply():
-#     print(point["target"])
-#     trans_point = lda.transform(point, target_id = "target")
-#     print(trans_point)
-#     trans_data = trans_data.append((np.matmul(lda.W.transpose(), transpoint), point["target"]), columns = data_head)
-
-
-#plt.scatter(points.loc[points["target"] == 0]["x"].to_numpy(), points.loc[points["target"] == 0]["y"].to_numpy())
-
-# for i in range(2):
-#    plot_points = points.loc[points["target"] == i]
-#    print(plot_points[0])
-#    print(plot_points[1])
-#    plt.scatter(plot_points[0].to_numpy(), plot_points[1].to_numpy())
-
 plt.legend()
 plt.axis('equal')
-plt.savefig("Python/LDA_plots/LDA_plot_example.pdf")
-plt.show()
+plt.savefig("LDA_plot_example.pdf")
+
