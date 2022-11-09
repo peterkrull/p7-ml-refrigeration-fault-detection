@@ -46,6 +46,8 @@ for i in range(0, len_trans):
     plt.plot([coordinate_along_w[0,i], data[0,i]], [coordinate_along_w[1,i], data[1,i]], "--", color = "grey")
     print(np.dot([coordinate_along_w[0,i]-data[0,i] ,coordinate_along_w[1,i]-data[1,i]], w))
 
+print("w dot mean = " + str(np.matmul(w,sample_mean)))
+
 plt.axis('equal')
 plt.legend()
 plt.savefig("pcaChapter/PCA_example_py.pdf")
