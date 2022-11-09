@@ -47,7 +47,7 @@ print("w dot mean = " + str(np.matmul(w,sample_mean)))
 
 plt.axis('equal')
 plt.legend()
-plt.savefig("PCA_example_py.pdf")
-plt.show()
+plt.savefig("PCA_Plot.pdf")
+
 
 
