@@ -37,7 +37,7 @@ labels_tst = test_data['target']
 parameters = {'kernel':['linear', 'rbf'], 'decision_function_shape':['ovo', 'ovr'], 'C' : [10**x for x in range(-1,6)], 'gamma': [10**x for x in range(-3, 3)]}
 print(parameters)
 svc = svm.SVC()
-clf = GridSearchCV(svc, parameters, verbose = 2, n_jobs=3)
+clf = GridSearchCV(svc, parameters, verbose = 2, n_jobs=8)
 clf.fit(trn.drop('target', axis = 1).to_numpy(), trn['target'].to_numpy())
 print(clf.best_estimator_)
 
