@@ -1,5 +1,4 @@
 import sys
-from tkinter.tix import COLUMN
 sys.path.append(sys.path[0] + "\..")
 from Python import pca
 from Python import confusion_matrix
@@ -9,6 +8,7 @@ import matplotlib.pyplot as plt
 import matplotlib as mpl
 from matplotlib import rc
 import sklearn.svm as svm
+from sklearn.model_selection import GridSearchCV
 import json as js
 from Python import standardization 
 from Python import plot_functions as pf
@@ -48,7 +48,17 @@ def PCA_SVM(train_data: pd.DataFrame, val_data: pd.DataFrame, classes: pd.DataFr
 
     print("Fitting data")
     #Fit svm model to dim red data
-    clf = svm.SVC(decision_function_shape='ovo', gamma = gamma, C = c)
+    parameters = {'kernel':['linear', 'rbf'], 'decision_function_shape':['ovo', 'ovr'], 'C' : [10**x for x in range(-1,6)], 'gamma': [10**x for x in range(-3, 3)]}
+    svc = svm.SVC()
+    clf = GridSearchCV(svc, parameters, verbose = 2, n_jobs=8)
+    clf.fit(trans_data.drop('target', axis = 1).to_numpy(), trans_data['target'].to_numpy())
+    print(clf.best_estimator_)
+
+    f = open("machine learning scripts/pcasvm_grid_search.txt", 'w')
+    f.write(str(clf.best_estimator_))
+    f.close()
+
+
     clf.fit(trans_data.drop('target', axis = 1).to_numpy(), trans_data['target'].to_numpy())
 
 
