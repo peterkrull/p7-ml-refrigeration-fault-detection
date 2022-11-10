@@ -30,7 +30,7 @@ def get_valData(train_data: pd.DataFrame):
 def PCA_SVM(train_data: pd.DataFrame, val_data: pd.DataFrame, classes: pd.DataFrame, conf_title: str = 'confusion_matrix_pcasvm', plt_title :str = 'pca_reduc', plt_show : bool = False, gamma = .01, c = 1000, act_valdata :pd.DataFrame= None):
     #Initiate PCA-algo to find dim reduction matrix w (Stored in class)
     pca_class = pca.PCA_reducer(train_data, 2,'target', scree_plot= True)
-    plt.savefig("machine learning scripts/pca_svm_screeplot.pdf", bbox_inches='tight')
+    plt.savefig(sys.path[0]+"/pca_svm_screeplot.pdf", bbox_inches='tight')
 
     #Dim reduce training data & val data
     print("Transforming data")
@@ -41,9 +41,9 @@ def PCA_SVM(train_data: pd.DataFrame, val_data: pd.DataFrame, classes: pd.DataFr
     error_colors = js.load(open(f'Python/error_color_coding.json'))
 
     print("Plotting data")
-    pf.plot_transformation(trans_data.iloc[::10, :], file_name = "machine learning scripts/" + plt_title + ".pdf", ec_filepath = 'Python/error_color_coding.json')
+    pf.plot_transformation(trans_data.iloc[::10, :], file_name =  plt_title + ".pdf", ec_filepath = 'Python/error_color_coding.json')
 
-    pf.plot_transformation(val_red_data.iloc[::10, :], file_name="machine learning scripts/" + plt_title + "_val_data.pdf", ec_filepath = 'Python/error_color_coding.json')
+    pf.plot_transformation(val_red_data.iloc[::10, :], file_name= plt_title + "_val_data.pdf", ec_filepath = 'Python/error_color_coding.json')
 
 
     print("Fitting data")
@@ -54,7 +54,7 @@ def PCA_SVM(train_data: pd.DataFrame, val_data: pd.DataFrame, classes: pd.DataFr
     clf.fit(trans_data.drop('target', axis = 1).to_numpy(), trans_data['target'].to_numpy())
     print(clf.best_estimator_)
 
-    f = open("machine learning scripts/pcasvm_grid_search.txt", 'w')
+    f = open("/pcasvm_grid_search.txt", 'w')
     f.write(str(clf.best_estimator_))
     f.close()
 
@@ -75,7 +75,7 @@ def PCA_SVM(train_data: pd.DataFrame, val_data: pd.DataFrame, classes: pd.DataFr
         conf_matrix[int(y)][int(x)] +=1
 
     #Generate confusion matrix pdf
-    confusion_matrix.confusion_matrix(conf_matrix, figsize = (10,10), save_fig_name = 'machine learning scripts/' + conf_title + '.pdf', title = 'Training data')
+    confusion_matrix.confusion_matrix(conf_matrix, figsize = (10,10), save_fig_name = conf_title + '.pdf', title = 'Training data')
 
     print("Classifying validation data")
     #Use validation data
@@ -89,11 +89,11 @@ def PCA_SVM(train_data: pd.DataFrame, val_data: pd.DataFrame, classes: pd.DataFr
         conf_matrix[int(y)][int(x)] +=1
 
     #Generate confusion matrix pdf
-    confusion_matrix.confusion_matrix(conf_matrix, figsize = (10,10), save_fig_name = 'machine learning scripts/' + conf_title + 'validation.pdf', title = 'Validation data (Subset of training data)')
+    confusion_matrix.confusion_matrix(conf_matrix, figsize = (10,10), save_fig_name =  conf_title + 'validation.pdf', title = 'Validation data (Subset of training data)')
 
     if not act_valdata.empty:
         act_valdata = pca_class.transform(act_valdata, 'target')
-        pf.plot_transformation(act_valdata.iloc[::10, :], file_name="machine learning scripts/" + plt_title + "_actual_val_data.pdf", ec_filepath = 'Python/error_color_coding.json')
+        pf.plot_transformation(act_valdata.iloc[::10, :], file_name= plt_title + "_actual_val_data.pdf", ec_filepath = 'Python/error_color_coding.json')
 
         pred_val = clf.predict(act_valdata.drop('target', axis = 1).to_numpy())
         print(clf.score(act_valdata.drop('target', axis = 1).to_numpy(), act_valdata['target']))
@@ -105,7 +105,7 @@ def PCA_SVM(train_data: pd.DataFrame, val_data: pd.DataFrame, classes: pd.DataFr
             conf_matrix[int(y)][int(x)] +=1
 
         #Generate confusion matrix pdf
-        confusion_matrix.confusion_matrix(conf_matrix, figsize = (10,10), save_fig_name = 'machine learning scripts/' + conf_title + '_actual_validation.pdf', title = 'Validation data')
+        confusion_matrix.confusion_matrix(conf_matrix, figsize = (10,10), save_fig_name =  conf_title + '_actual_validation.pdf', title = 'Validation data')
 
     plt.clf()
 
@@ -137,6 +137,7 @@ if __name__ == "__main__":
     training_data_noisy = pd.read_csv(sys.path[0] + "/../TrainingData/neodata/fault_all_noise_67.csv")
     test_data_noisy = pd.read_csv(sys.path[0] + "/../ValidationData/neodata/fault_all_noise_67.csv")
     class_labels = np.arange(0,20+1,1)
+    print(sys.path[0])
 
 
     non_noisy_stand = standardization.standardization(training_data, target = 'target')
