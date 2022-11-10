@@ -37,8 +37,6 @@ def PCA_SVM(train_data: pd.DataFrame, val_data: pd.DataFrame, classes: pd.DataFr
     trans_data = pca_class.transform(train_data, 'target')
     val_red_data = pca_class.transform(val_data, 'target')
 
-    #Get colors for the errors
-    error_colors = js.load(open(f'Python/error_color_coding.json'))
 
     print("Plotting data")
     pf.plot_transformation(trans_data.iloc[::10, :], file_name =  plt_title + ".pdf", ec_filepath = sys.path[0] + '/../Python/error_color_coding.json')
