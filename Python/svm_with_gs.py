@@ -17,8 +17,8 @@ plt.rcParams.update({
 })
 
 # Load training data
-train_data = pd.read_csv(sys.path[0] + "/../TrainingData/neodata/fault_all_Noise_67.csv")
-test_data = pd.read_csv(sys.path[0] +"/../ValidationData/neodata/fault_all_Noise_67.csv")
+train_data = pd.read_csv("../TrainingData/neodata/fault_all_Noise_67.csv")
+test_data = pd.read_csv("../ValidationData/neodata/fault_all_Noise_67.csv")
 
 #Normalization / conditioning
 standardizer = sd.standardization(train_data,'target')
