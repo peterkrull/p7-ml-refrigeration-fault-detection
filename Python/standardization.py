@@ -14,6 +14,18 @@ class standardization:
     def transform(self, data : pd.DataFrame):
         if self.target:
             targets = data.get(self.target)
-            return ((data.drop(self.target,axis=1)-self.mean)/self.std).assign(target = targets)
+            for i in data.drop(self.target, axis = 1):
+                if self.std[i] != 0:
+                    data[i] = (data[i]-self.mean[i])/self.std[i]
+                else:
+                    data[i] = data[i]-self.mean[i]
+
+            return data
         else:
-            return (data-self.mean)/self.std
+            for i in data:
+                if self.std[i] != 0:
+                    data[i] = (data[i]-self.mean[i])/self.std[i]
+                else:
+                    data[i] = data[i]-self.mean[i]
+
+            return data

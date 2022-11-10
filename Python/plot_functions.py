@@ -2,7 +2,7 @@ import matplotlib.pyplot as plt
 import pandas as pd
 import json as js
 
-def plot_transformation(data :pd.DataFrame, file_name : str = None, target : str = 'target', plt_show : bool = False, ec_filepath : str = f'error_color_coding.json', figsize : tuple = (10,7.5), legend_pos : tuple = (1.15, .5)):
+def plot_transformation(data :pd.DataFrame, file_name : str = None, target : str = 'target', plt_show : bool = False, ec_filepath : str = f'error_color_coding.json', figsize : tuple = (6,4), legend_pos : tuple = (1.25, .5)):
     """
         Generates plots of two dimensional scatter data, for each fault. Useful for PCA and LDA
 
@@ -14,8 +14,7 @@ def plot_transformation(data :pd.DataFrame, file_name : str = None, target : str
         fig_size : size of figure, standard (10,7.5)
         legend_pos : Position of legend, right edge of plot = 1, upper edge of plot = 1
     """
-
-    plt.figure()
+    
     error_colors = js.load(open(ec_filepath))
 
     plt.figure(figsize = figsize)
