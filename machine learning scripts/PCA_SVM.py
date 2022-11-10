@@ -132,10 +132,10 @@ if __name__ == "__main__":
         plt.rc('text.latex', preamble=r'\usepackage{amsmath}')
 
     #Read data and assign labels
-    training_data = pd.read_csv(sys.path[0] + "\..\\TrainingData\\neodata\\fault_all_nonoise_67.csv")
-    test_data = pd.read_csv(sys.path[0] + "\..\\ValidationData\\neodata\\fault_all_nonoise_67.csv")
-    training_data_noisy = pd.read_csv(sys.path[0] + "\..\\TrainingData\\neodata\\fault_all_noise_67.csv")
-    test_data_noisy = pd.read_csv(sys.path[0] + "\..\\ValidationData\\neodata\\fault_all_noise_67.csv")
+    training_data = pd.read_csv(sys.path[0] + "/../TrainingData/neodata/fault_all_nonoise_67.csv")
+    test_data = pd.read_csv(sys.path[0] + "/../ValidationData/neodata/fault_all_nonoise_67.csv")
+    training_data_noisy = pd.read_csv(sys.path[0] + "/../TrainingData/neodata/fault_all_noise_67.csv")
+    test_data_noisy = pd.read_csv(sys.path[0] + "/../ValidationData/neodata/fault_all_noise_67.csv")
     class_labels = np.arange(0,20+1,1)
 
 
