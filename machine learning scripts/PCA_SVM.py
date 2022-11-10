@@ -1,18 +1,18 @@
 import sys
-from tkinter.tix import COLUMN
-sys.path.append(sys.path[0] + "\..")
-from Python import pca
-from Python import confusion_matrix
+sys.path.append(sys.path[0] + "/../Python")
+import pca
+import confusion_matrix
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
 import matplotlib as mpl
 from matplotlib import rc
 import sklearn.svm as svm
+from sklearn.model_selection import GridSearchCV
 import json as js
-from Python import standardization 
-from Python import plot_functions as pf
-from Python import lda 
+import standardization 
+import plot_functions as pf
+import lda 
 
 
 def get_valData(train_data: pd.DataFrame):
@@ -30,7 +30,7 @@ def get_valData(train_data: pd.DataFrame):
 def PCA_SVM(train_data: pd.DataFrame, val_data: pd.DataFrame, classes: pd.DataFrame, conf_title: str = 'confusion_matrix_pcasvm', plt_title :str = 'pca_reduc', plt_show : bool = False, gamma = .01, c = 1000, act_valdata :pd.DataFrame= None):
     #Initiate PCA-algo to find dim reduction matrix w (Stored in class)
     pca_class = pca.PCA_reducer(train_data, 2,'target', scree_plot= True)
-    plt.savefig('machine learning scripts/pca_svm_screeplot.pdf', bbox_inches='tight')
+    plt.savefig("machine learning scripts/pca_svm_screeplot.pdf", bbox_inches='tight')
 
     #Dim reduce training data & val data
     print("Transforming data")
@@ -48,7 +48,17 @@ def PCA_SVM(train_data: pd.DataFrame, val_data: pd.DataFrame, classes: pd.DataFr
 
     print("Fitting data")
     #Fit svm model to dim red data
-    clf = svm.SVC(decision_function_shape='ovo', gamma = gamma, C = c)
+    parameters = {'kernel':['linear', 'rbf'], 'decision_function_shape':['ovo', 'ovr'], 'C' : [10**x for x in range(-1,6)], 'gamma': [10**x for x in range(-3, 3)]}
+    svc = svm.SVC()
+    clf = GridSearchCV(svc, parameters, verbose = 2, n_jobs=8)
+    clf.fit(trans_data.drop('target', axis = 1).to_numpy(), trans_data['target'].to_numpy())
+    print(clf.best_estimator_)
+
+    f = open("machine learning scripts/pcasvm_grid_search.txt", 'w')
+    f.write(str(clf.best_estimator_))
+    f.close()
+
+
     clf.fit(trans_data.drop('target', axis = 1).to_numpy(), trans_data['target'].to_numpy())
 
 
@@ -115,17 +125,17 @@ def add_noise (data: pd.DataFrame, target: str = 'target'):
 
 if __name__ == "__main__":
 
-    plot_latex = True
+    plot_latex = False
     if plot_latex:
         rc('font', **{'family': 'serif', 'serif': ['Computer Modern']})
         rc('text', usetex=True)
         plt.rc('text.latex', preamble=r'\usepackage{amsmath}')
 
     #Read data and assign labels
-    training_data = pd.read_csv(sys.path[0] + "\..\\TrainingData\\neodata\\fault_all_nonoise_67.csv")
-    test_data = pd.read_csv(sys.path[0] + "\..\\ValidationData\\neodata\\fault_all_nonoise_67.csv")
-    training_data_noisy = pd.read_csv(sys.path[0] + "\..\\TrainingData\\neodata\\fault_all_noise_67.csv")
-    test_data_noisy = pd.read_csv(sys.path[0] + "\..\\ValidationData\\neodata\\fault_all_noise_67.csv")
+    training_data = pd.read_csv(sys.path[0] + "/../TrainingData/neodata/fault_all_nonoise_67.csv")
+    test_data = pd.read_csv(sys.path[0] + "/../ValidationData/neodata/fault_all_nonoise_67.csv")
+    training_data_noisy = pd.read_csv(sys.path[0] + "/../TrainingData/neodata/fault_all_noise_67.csv")
+    test_data_noisy = pd.read_csv(sys.path[0] + "/../ValidationData/neodata/fault_all_noise_67.csv")
     class_labels = np.arange(0,20+1,1)
 
 
