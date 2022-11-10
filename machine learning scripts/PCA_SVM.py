@@ -41,9 +41,9 @@ def PCA_SVM(train_data: pd.DataFrame, val_data: pd.DataFrame, classes: pd.DataFr
     error_colors = js.load(open(f'Python/error_color_coding.json'))
 
     print("Plotting data")
-    pf.plot_transformation(trans_data.iloc[::10, :], file_name =  plt_title + ".pdf", ec_filepath = 'Python/error_color_coding.json')
+    pf.plot_transformation(trans_data.iloc[::10, :], file_name =  plt_title + ".pdf", ec_filepath = sys.path[0] + '/../Python/error_color_coding.json')
 
-    pf.plot_transformation(val_red_data.iloc[::10, :], file_name= plt_title + "_val_data.pdf", ec_filepath = 'Python/error_color_coding.json')
+    pf.plot_transformation(val_red_data.iloc[::10, :], file_name= plt_title + "_val_data.pdf", ec_filepath = sys.path[0] +'/../Python/error_color_coding.json')
 
 
     print("Fitting data")
