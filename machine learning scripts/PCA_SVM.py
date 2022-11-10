@@ -125,7 +125,7 @@ def add_noise (data: pd.DataFrame, target: str = 'target'):
 
 if __name__ == "__main__":
 
-    plot_latex = True
+    plot_latex = False
     if plot_latex:
         rc('font', **{'family': 'serif', 'serif': ['Computer Modern']})
         rc('text', usetex=True)
