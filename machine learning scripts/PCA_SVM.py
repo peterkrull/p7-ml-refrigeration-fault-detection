@@ -1,7 +1,7 @@
 import sys
-sys.path.append(sys.path[0] + "\..")
-from Python import pca
-from Python import confusion_matrix
+sys.path.append(sys.path[0] + "/../Python")
+import pca
+import confusion_matrix
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
@@ -10,9 +10,9 @@ from matplotlib import rc
 import sklearn.svm as svm
 from sklearn.model_selection import GridSearchCV
 import json as js
-from Python import standardization 
-from Python import plot_functions as pf
-from Python import lda 
+import standardization 
+import plot_functions as pf
+import lda 
 
 
 def get_valData(train_data: pd.DataFrame):
