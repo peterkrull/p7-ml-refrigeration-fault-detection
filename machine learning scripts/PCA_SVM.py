@@ -30,7 +30,7 @@ def get_valData(train_data: pd.DataFrame):
 def PCA_SVM(train_data: pd.DataFrame, val_data: pd.DataFrame, classes: pd.DataFrame, conf_title: str = 'confusion_matrix_pcasvm', plt_title :str = 'pca_reduc', plt_show : bool = False, gamma = .01, c = 1000, act_valdata :pd.DataFrame= None):
     #Initiate PCA-algo to find dim reduction matrix w (Stored in class)
     pca_class = pca.PCA_reducer(train_data, 2,'target', scree_plot= True)
-    plt.savefig('machine learning scripts/pca_svm_screeplot.pdf', bbox_inches='tight')
+    plt.savefig("machine learning scripts/pca_svm_screeplot.pdf", bbox_inches='tight')
 
     #Dim reduce training data & val data
     print("Transforming data")
