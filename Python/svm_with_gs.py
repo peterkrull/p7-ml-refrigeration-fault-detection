@@ -38,6 +38,5 @@ parameters = {'kernel':['linear', 'rbf'], 'decision_function_shape':['ovo', 'ovr
 print(parameters)
 svc = svm.SVC()
 clf = GridSearchCV(svc, parameters, verbose = 2)
-trn = trn.loc[::10,:]
 clf.fit(trn.drop('target', axis = 1).to_numpy(), trn['target'].to_numpy())
 print(clf.best_estimator_)
