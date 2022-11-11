@@ -25,6 +25,7 @@ validation_data = pd.read_csv(sys.path[0] + "/../ValidationData/neodata/fault_al
 standardizer = sd.standardization(train_data,'target')
 
 trn = standardizer.transform(train_data)
+val = standardizer.transform(validation_data)
 tst = standardizer.transform(test_data)
 
 #trn = train_data
@@ -35,17 +36,27 @@ targets = train_data['target'].unique().tolist()        # List of classes
 labels_tst = test_data['target']
 
 
-C_max_acc = 10000
-gamma_max_acc = 0.001
-C_params = [x for x in np.linspace(C_max_acc/2,C_max_acc, num = 5)]  + [x for x in np.linspace(C_max_acc, 2*C_max_acc, num = 5)]
-gamma_params = [10**x for x in range(-6,0)]
-parameters = {'kernel':['rbf'], 'decision_function_shape':['ovo'], 'C' : C_params, 'gamma': gamma_params}
-print(parameters)
-svc = svm.SVC()
-clf = GridSearchCV(svc, parameters, verbose = 2, n_jobs=8)
-clf.fit(trn.drop('target', axis = 1).to_numpy(), trn['target'].to_numpy())
-print(clf.best_estimator_)
+print_str : str = ''
+C_max_acc = 1000
+gamma_max_acc = 0.01
+n_vals = 5
+for i in range(0, 7):
+    C_params = [x for x in np.linspace(C_max_acc/2,C_max_acc, num = n_vals)]  + [x for x in np.linspace(C_max_acc, 2*C_max_acc, num = n_vals)]
+    C_params = list(dict.fromkeys(C_params))
+
+    gamma_params = [x for x in np.linspace(gamma_max_acc/2,gamma_max_acc, num = n_vals)]  + [x for x in np.linspace(gamma_max_acc, 2*gamma_max_acc, num = n_vals)]
+    gamma_params = list(dict.fromkeys(gamma_params))
+
+    parameters = {'kernel':['rbf'], 'decision_function_shape':['ovo'], 'C' : C_params, 'gamma': gamma_params}
+    print(parameters)
+    svc = svm.SVC(cache_size= 500)
+    clf = GridSearchCV(svc, parameters, verbose = 3, n_jobs=8, )
+    clf.fit(trn.drop('target', axis = 1), trn['target'])
+    print_str += str(i) + ' max accuracy: ' + str(clf.score(val.drop('target', axis = 1), val['target'])) + '\n'
+    print(clf.best_estimator_)
+    C_max_acc = clf.best_params_['C']
+    gamma_max_acc = clf.best_params_['gamma']
 
 f = open("svm_grid_search.txt", 'w')
-f.write(str(clf.best_estimator_))
+f.write(print_str + 'best parameters:' + str(clf.best_params_))
 f.close()
