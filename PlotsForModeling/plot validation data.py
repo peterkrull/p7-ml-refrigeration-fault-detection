@@ -38,7 +38,7 @@ def redraw_Figure(n):
     axs.clear()
     axs.plot(data)
     plt.legend(data.columns, bbox_to_anchor=(1, 1))
-    plt.title(f'Fault {n}: {fault_description[n]}')
+    plt.title(f"Fault {n}: {fault_description[n]} \n Tamb={data['Tamb'][0]} Tset={data['Tset'][0]}")
     plt.xlabel('Press left and right arrows to change datasets')
     fig.canvas.draw()
 
