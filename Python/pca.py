@@ -1,10 +1,11 @@
 import pandas as pd
 import numpy as np
+import matplotlib.pyplot as plt
 
 # Transform entire data frame
 class PCA_reducer:
 
-    def __init__(self, data : pd.DataFrame, dims : int, target_id : str = None) -> None:
+    def __init__(self, data : pd.DataFrame, dims : int, target_id : str = None, scree_plot : bool = False) -> None:
 
         # Extract labels and drop
         if target_id:
@@ -24,6 +25,14 @@ class PCA_reducer:
         s = sum(np.real(eig_val))
         print(f"Preserving {round(sum(np.real(eig_val[0:dims]))/s*100,2)}% of eigen value transformations",)
 
+        if scree_plot:
+            eig_val[::-1].sort()
+            plt.figure(figsize=(6,4))
+            plt.bar([x for x in range(1,len(eig_vec)+1)], np.real(eig_val[0:len(eig_vec)]))
+            plt.xticks([x for x in range(1, len(eig_vec)+1)])
+            plt.xlabel("Eigenvalue")
+            plt.ylabel("Magnitude")
+
     def transform(self, data : pd.DataFrame, target_id : str = None):
 
         # Determine appropriate label definition
@@ -35,7 +44,7 @@ class PCA_reducer:
             data = data.drop(target_id, axis=1)
 
         # Do transform
-        sub = data.sub(self.mean).transpose()
+        sub = data.transpose()#sub(self.mean).transpose()
         z = pd.DataFrame(np.dot(self.W.transpose(),sub.to_numpy()))
 
         # Add labels back to reduced data
