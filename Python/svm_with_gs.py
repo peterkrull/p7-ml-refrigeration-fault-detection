@@ -18,7 +18,8 @@ plt.rcParams.update({
 
 # Load training data
 train_data = pd.read_csv(sys.path[0] + "/../TrainingData/neodata/fault_all_noise_67.csv")
-test_data = pd.read_csv(sys.path[0] + "/../ValidationData/neodata/fault_all_noise_67.csv")
+test_data = pd.read_csv(sys.path[0] + '/../TestData/neodata/fault_all_noise_67.csv')
+validation_data = pd.read_csv(sys.path[0] + "/../ValidationData/neodata/fault_all_noise_67.csv")
 
 #Normalization / conditioning
 standardizer = sd.standardization(train_data,'target')
@@ -34,7 +35,11 @@ targets = train_data['target'].unique().tolist()        # List of classes
 labels_tst = test_data['target']
 
 
-parameters = {'kernel':['linear', 'rbf'], 'decision_function_shape':['ovo', 'ovr'], 'C' : [10**x for x in range(-1,6)], 'gamma': [10**x for x in range(-3, 3)]}
+C_max_acc = 10000
+gamma_max_acc = 0.001
+C_params = [x for x in np.linspace(C_max_acc/2,C_max_acc, num = 5)]  + [x for x in np.linspace(C_max_acc, 2*C_max_acc, num = 5)]
+gamma_params = [10**x for x in range(-6,0)]
+parameters = {'kernel':['rbf'], 'decision_function_shape':['ovo'], 'C' : C_params, 'gamma': gamma_params}
 print(parameters)
 svc = svm.SVC()
 clf = GridSearchCV(svc, parameters, verbose = 2, n_jobs=8)
