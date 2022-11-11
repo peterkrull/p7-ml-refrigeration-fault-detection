@@ -46,7 +46,7 @@ def PCA_SVM(train_data: pd.DataFrame, val_data: pd.DataFrame, classes: pd.DataFr
 
     print("Fitting data")
     #Fit svm model to dim red data
-    parameters = {'kernel':['linear', 'rbf'], 'decision_function_shape':['ovo', 'ovr'], 'C' : [10**x for x in range(-1,6)], 'gamma': [10**x for x in range(-3, 3)]}
+    parameters = {'kernel':['rbf'], 'decision_function_shape':['ovo'], 'C' : [10**x for x in range(-1,4)], 'gamma': [10**x for x in range(-3, 3)]}
     svc = svm.SVC()
     clf = GridSearchCV(svc, parameters, verbose = 2, n_jobs=8)
     clf.fit(trans_data.drop('target', axis = 1).to_numpy(), trans_data['target'].to_numpy())
