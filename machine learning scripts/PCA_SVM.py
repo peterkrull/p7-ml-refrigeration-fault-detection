@@ -52,7 +52,7 @@ def PCA_SVM(train_data: pd.DataFrame, val_data: pd.DataFrame, classes: pd.DataFr
     clf.fit(trans_data.drop('target', axis = 1).to_numpy(), trans_data['target'].to_numpy())
     print(clf.best_estimator_)
 
-    f = open("/pcasvm_grid_search.txt", 'w')
+    f = open("pcasvm_grid_search.txt", 'w')
     f.write(str(clf.best_estimator_))
     f.close()
 
