@@ -25,6 +25,7 @@ validation_data = pd.read_csv(sys.path[0] + "/../ValidationData/neodata/fault_al
 standardizer = sd.standardization(train_data,'target')
 
 trn = standardizer.transform(train_data)
+val = standardizer.transform(validation_data)
 tst = standardizer.transform(test_data)
 
 #trn = train_data
@@ -39,7 +40,7 @@ print_str : str = ''
 C_max_acc = 1000
 gamma_max_acc = 0.01
 n_vals = 5
-for i in range(0, 5):
+for i in range(0, 7):
     C_params = [x for x in np.linspace(C_max_acc/2,C_max_acc, num = n_vals)]  + [x for x in np.linspace(C_max_acc, 2*C_max_acc, num = n_vals)]
     C_params = list(dict.fromkeys(C_params))
 
@@ -49,9 +50,9 @@ for i in range(0, 5):
     parameters = {'kernel':['rbf'], 'decision_function_shape':['ovo'], 'C' : C_params, 'gamma': gamma_params}
     print(parameters)
     svc = svm.SVC(cache_size= 500)
-    clf = GridSearchCV(svc, parameters, verbose = 3, n_jobs=8)
+    clf = GridSearchCV(svc, parameters, verbose = 3, n_jobs=8, )
     clf.fit(trn.drop('target', axis = 1), trn['target'])
-    print_str += str(i) + ' max accuracy:' + str(clf.score(validation_data.drop('target', axis = 1), validation_data['target'])) + '\n'
+    print_str += str(i) + ' max accuracy: ' + str(clf.score(val.drop('target', axis = 1), val['target'])) + '\n'
     print(clf.best_estimator_)
     C_max_acc = clf.best_params_['C']
     gamma_max_acc = clf.best_params_['gamma']
