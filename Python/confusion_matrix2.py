@@ -5,7 +5,17 @@ from sklearn.metrics import confusion_matrix as confMatrix
 
 
 def confusion_matrix(true_Label : np.array,predicted_label : np.array ,axis_ticks : tuple = None, title : str = "Confusion matrix", normalize = True,save_fig_name : str = None, figsize : tuple = (10,10),eval_labels = True):
-    
+
+    """Plotting confusion matrix
+
+        Args:
+            `trueLabel (np.ndarray)`: Data set, samples as rows
+            `predicted label (np.ndarray)`: Labels for data set
+            
+    """       
+
+
+
     conf_matrix = confMatrix(true_Label, predicted_label)             # Make confusion matrix
 
 
