@@ -1,7 +1,10 @@
 import matplotlib.pyplot as plt
 import numpy as np
 
-
+def false_info(conf_matrix):
+    false_positive = round((np.sum(conf_matrix[0,:])-conf_matrix[0,0])/np.sum(conf_matrix[0,:])*100,2)
+    false_negative = round(np.sum(conf_matrix[1:,0])/np.sum(conf_matrix[1:,:])*100,2)
+    print(f"False positives : {false_positive}%\nFalse negatives : {false_negative}%")
 
 def confusion_matrix(conf_matrix : np.matrix, axis_ticks : tuple = None, title : str = "Confusion matrix", normalize = True,save_fig_name : str = None, figsize : tuple = (10,10),eval_labels = True):
     
