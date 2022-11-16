@@ -81,17 +81,13 @@ class LDA_reducer:
 class reducer:
 
     # Initialize the LDA by using a dataset
-    def __init__(self, X : 'np.ndarray', y : 'np.ndarray', dims : int, frac : int = 1, scree_plot : bool = False) -> None:
+    def __init__(self, X : 'np.ndarray', y : 'np.ndarray', dims : int, scree_plot : bool = False) -> None:
         
         # Get number features
         features = X.shape[1]
 
         if dims > features - 1:
             raise ValueError("Number of dimensions is too great.")
-
-        # Optional : downsample data set
-        if frac < 1:
-            data = data.sample(frac=frac)
 
         # Calculate between-class covariance
         self.Sb = np.zeros((features,features))
