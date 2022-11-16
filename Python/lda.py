@@ -94,7 +94,6 @@ class reducer:
         mu = X.mean(axis=0)
         for k in y.unique():
             inner = X[y == k].mean(axis=0) - mu
-            print(inner.shape)
             self.Sb += np.outer(inner,inner)
 
         # Calculate within-class covariance
@@ -102,7 +101,6 @@ class reducer:
         for k in y.unique():
             data_k = X[y == k]
             inner = data_k - data_k.mean(axis=0)
-            print(inner.shape)    
             self.Sw += np.dot(inner.T,inner)
 
         # Calculate omega
