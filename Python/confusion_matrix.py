@@ -6,7 +6,7 @@ def false_info(conf_matrix):
     false_negative = round(np.sum(conf_matrix[1:,0])/np.sum(conf_matrix[1:,:])*100,2)
     print(f"False positives : {false_positive}%\nFalse negatives : {false_negative}%")
 
-def confusion_matrix(conf_matrix : np.matrix, axis_ticks : tuple = None, title : str = "Confusion matrix", normalize = True,save_fig_name : str = None, figsize : tuple = (10,10),eval_labels = True):
+def confusion_matrix(conf_matrix : np.matrix, axis_ticks : tuple = None, title : str = "Confusion matrix", normalize = True,save_fig_name : str = None, figsize : tuple = (10,10),eval_labels = False):
     
     # Calculate accuracy of confusion matrix
     accuracy = np.sum(np.diag(conf_matrix))/np.sum(conf_matrix)
