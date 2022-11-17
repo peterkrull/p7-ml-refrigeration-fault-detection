@@ -23,11 +23,11 @@ def filepath(n):#get the filepaths from numbers
 
 def on_press(event):
     global n #cuz it only works like this
-<<<<<<< Updated upstream
+
     global offset
-=======
+
     print(event.key)
->>>>>>> Stashed changes
+
 
     sys.stdout.flush()
     if event.key == 'left':
