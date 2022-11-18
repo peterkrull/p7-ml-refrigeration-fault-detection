@@ -16,9 +16,10 @@ n = 17
 
 def filepath(n):#get the filepaths from numbers
     if n == 0:
-        return "ValidationData/NewValid_n1.csv"
+        return sys.path[0]+"\\..\\..\\TestData\\NewValid_n1.csv"
     else:
-        return f"ValidationData/NewValid_f{n}.csv"
+        return sys.path[0]+f"\\..\\..\\TestData\\NewValid_f{n}.csv"
+
 
 def on_press(event):
     global n #cuz it only works like this

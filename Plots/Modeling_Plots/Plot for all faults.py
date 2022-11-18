@@ -8,6 +8,7 @@ import os
 #   In this program you can view all datasets by pressing left and right arrows
 #
 
+print(sys.path[0])
 
 fault_description = ['Normal operation','Tsuc positive offset','Tsup positive offset','Tret positive offset','Tdis positive offset','Pdis positive offset','Psuc positive offset','Compr low perf','Loose exp valve','Evap fan low perf','Cond fan low perf','Tsuc negative offset','Tsup negative offset','Tret positive offset','Tdis negative offset','Pdis negative offset','Psuc negative offset','Broken compressor','Broken exp valve','Broken evap fan', 'Blocked condenser fan']
 
@@ -17,9 +18,9 @@ offset = 0
 
 def filepath(n):#get the filepaths from numbers
     if n == 0:
-        return "../TrainingData/Ntrain1.csv"
+        return sys.path[0]+"\\..\\..\\TrainingData\\Ntrain1.csv"
     else:
-        return f"../TrainingData/Ftrain{n}.csv"
+        return sys.path[0]+f"\\..\\..\\TrainingData\\Ftrain{n}.csv"
 
 def on_press(event):
     global n #cuz it only works like this
