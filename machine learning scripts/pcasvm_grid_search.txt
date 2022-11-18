@@ -1,0 +1,8 @@
+PCA_SVM, pca_n = 2, dim dataset = 11
+	Preserved eigenvalues = 70.23
+	Estimator = SVC(C=0.1, decision_function_shape='ovo', gamma=100.0)
+	Validation Accuracy = 0.6157489638839551
+	Validation false positives = 0.037037037037037035
+	Test accuracy = 0.05319148936170213
+	Test false positives = 1.0
+

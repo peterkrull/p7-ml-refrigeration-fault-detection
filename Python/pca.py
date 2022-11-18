@@ -18,12 +18,19 @@ class PCA_reducer:
         # Get eigen vectors
         eig_val , eig_vec = np.linalg.eig(cov)
 
+        #Sort eigen values + vectors, largest -> smallest
+        idx = eig_val.argsort()[::-1]
+        eig_val = eig_val[idx]
+        eig_vec = eig_vec[idx]
+
+        #Create projection matrix
         self.W = eig_vec[:,0:dims]
         self.mean = data.mean(axis=0)
         self.target_id = target_id
 
         s = sum(np.real(eig_val))
-        print(f"Preserving {round(sum(np.real(eig_val[0:dims]))/s*100,2)}% of eigen value transformations",)
+        self.preserved_eigval = round(sum(np.real(eig_val[0:dims]))/s*100,2)
+        print(f"Preserving {self.preserved_eigval}% of eigen value transformations",)
 
         if scree_plot:
             eig_val[::-1].sort()

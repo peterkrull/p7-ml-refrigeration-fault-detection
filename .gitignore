@@ -3,3 +3,13 @@
 *confidential*
 *ignore*
 *.pyc
+ClassificationScripts/zahras_implementation.py
+DataProcessing/send_to_zahra_preproc.zip
+DataProcessing/send_to_zahra_preproc/confusion_matrix.py
+DataProcessing/send_to_zahra_preproc/data_extractor.py
+DataProcessing/send_to_zahra_preproc/noise_description.json
+DataProcessing/send_to_zahra_preproc/pre_processor.py
+DataProcessing/send_to_zahra_preproc/Scikit_SVM.py
+DataProcessing/send_to_zahra_preproc/train_fault_all_noise_67.csv
+DataProcessing/send_to_zahra_preproc/val_fault_all_noise_67.csv
+Python/send_to_zahra.zip

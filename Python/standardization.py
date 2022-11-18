@@ -12,20 +12,21 @@ class standardization:
             self.std = data.std()
         
     def transform(self, data : pd.DataFrame):
+        data2 = data.copy()
         if self.target:
-            targets = data.get(self.target)
-            for i in data.drop(self.target, axis = 1):
+            targets = data2.get(self.target)
+            for i in data2.drop(self.target, axis = 1):
                 if self.std[i] != 0:
-                    data[i] = (data[i]-self.mean[i])/self.std[i]
+                    data2[i] = (data2[i]-self.mean[i])/self.std[i]
                 else:
-                    data[i] = data[i]-self.mean[i]
+                    data2[i] = data2[i]-self.mean[i]
 
-            return data
+            return data2
         else:
-            for i in data:
+            for i in data2:
                 if self.std[i] != 0:
-                    data[i] = (data[i]-self.mean[i])/self.std[i]
+                    data2[i] = (data2[i]-self.mean[i])/self.std[i]
                 else:
-                    data[i] = data[i]-self.mean[i]
+                    data2[i] = data2[i]-self.mean[i]
 
             return data
