@@ -5,15 +5,11 @@ import confusion_matrix
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
-import matplotlib as mpl
 from matplotlib import rc
 import sklearn.svm as svm
 from sklearn.model_selection import GridSearchCV
-from sklearn.multiclass import OneVsOneClassifier
-import json as js
 import standardization 
 import plot_functions as pf
-import lda 
 from sklearn.metrics import make_scorer
 
 def get_valData(train_data: pd.DataFrame):
@@ -86,8 +82,8 @@ def PCA_SVM(train_data: pd.DataFrame, val_data: pd.DataFrame, classes: pd.DataFr
     print("Fitting data")
     #Fit svm model to dim red data
     svc = svm.SVC(kernel = 'rbf', decision_function_shape='ovo')
-    C_params = [10**x for x in np.linspace(-3,-1, 51)]
-    gamma_params = [10**x for x in np.linspace(2,4, 51)]
+    gamma_params = [10**x for x in np.linspace(-3,-1, 51)]
+    C_params = [10**x for x in np.linspace(2,4, 51)]
     score = make_scorer(gridsearch_scoring, greater_is_better= True)
     clf = GridSearchCV(svc, {'C' : C_params, 'gamma' : gamma_params}, n_jobs = -1, verbose = 3, scoring = score)
     clf.fit(trans_data.drop('target', axis = 1).to_numpy(), trans_data['target'].to_numpy())
