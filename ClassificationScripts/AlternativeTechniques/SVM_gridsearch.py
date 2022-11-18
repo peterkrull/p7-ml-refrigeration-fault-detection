@@ -59,3 +59,7 @@ if __name__ == "__main__":
     tst_pred = clf.predict(test_data.drop('target', axis = 1).to_numpy())
 
     confusion_matrix.confusion_matrix(test_data['target'],tst_pred, save_fig_name = sys.path[0] + "/optimum_Svm/optimum_svm_tst.pdf")
+
+    f = open(sys.path[0] + "/optimum_Svm/svm_grid_search.txt", 'w')
+    f.write(str(clf.best_estimator_))
+    f.close()
