@@ -151,7 +151,7 @@ def PCA_SVM(train_data: pd.DataFrame, val_data: pd.DataFrame, classes: pd.DataFr
 
 if __name__ == "__main__":
 
-    plot_latex = True
+    plot_latex = False
     if plot_latex:
         rc('font', **{'family': 'serif', 'serif': ['Computer Modern']})
         rc('text', usetex=True)
