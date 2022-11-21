@@ -16,16 +16,17 @@ def confusion_matrix(conf_matrix : np.matrix, axis_ticks : tuple = None, title :
     for i, (num, denum) in enumerate(zip(np.diag(conf_matrix), np.sum(conf_matrix, axis = 1))):
         if denum != 0:
             each_accuracy[i] = num/denum
+            
+    width, height = conf_matrix.shape
 
     # Setup figure
     fig , axs = plt.subplots(figsize=figsize)
    
-    axs.imshow(np.sqrt(conf_matrix/conf_matrix.astype(np.float).sum(axis=1)),cmap="Greens")
+    axs.imshow(np.sqrt(conf_matrix/np.outer(conf_matrix.sum(axis=1),np.ones(width))),cmap="Greens")
     axs.set_xlabel("Predicted class")
     axs.set_ylabel("True class")
     axs.set_title(f"{title} : Accuracy {round(accuracy*100,3)}%")
 
-    width, height = conf_matrix.shape
 
     # Apply axis ticks
     if type(axis_ticks) != type(None):
