@@ -31,7 +31,7 @@ def false_positives(true_target : pd.DataFrame, predicted_target : pd.DataFrame)
 
 def gridsearch_scoring(y_true : np.array, y_pred : np.array):
     sum = 0
-    fp_ratio = .2
+    fp_ratio = .6
     fp = false_positives(pd.DataFrame(y_true, columns = ['target']), pd.DataFrame(y_pred))
     if fp != 0:
         sum += fp_ratio*1/fp
