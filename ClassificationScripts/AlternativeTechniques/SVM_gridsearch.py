@@ -41,16 +41,16 @@ if __name__ == "__main__":
     val_data = std.transform(val_data)
     test_data = std.transform(test_data)
 
-    val_data = val_data.iloc[::15,:]
-    train_data1 = train_data1.iloc[::15,:]
+    val_data = val_data.iloc[::1,:]
+    train_data1 = train_data1.iloc[::1,:]
 
     val_fold = [-1 for _ in range(len(train_data1)) ] + [0 for _ in range(len(val_data))]    
 
     optimize_data = pd.concat([train_data1, val_data])
 
     svc = svm.SVC()
-    C_params = [10**x for x in np.linspace(2,4, 5)]
-    gamma_params = [10**x for x in np.linspace(-3,-1, 5)]
+    C_params = [10**x for x in np.linspace(2,4, 51)]
+    gamma_params = [10**x for x in np.linspace(-3,-1, 51)]
     score = make_scorer(gridsearch_scoring, greater_is_better= False)
     ps = PredefinedSplit(val_fold)
     clf = GridSearchCV(svc, {'kernel':['rbf'], 'decision_function_shape':['ovo'], 'C' : C_params, 'gamma' : gamma_params}, n_jobs = -1, verbose = 3, scoring = score, cv = ps)
