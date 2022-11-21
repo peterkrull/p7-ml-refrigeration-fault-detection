@@ -18,7 +18,7 @@ def false_positives(true_target : pd.DataFrame, predicted_target : pd.DataFrame)
 
 def gridsearch_scoring(y_true : np.array, y_pred : np.array):
     sum = 0
-    fp_ratio = .2
+    fp_ratio = .6
     fp = false_positives(pd.DataFrame(y_true, columns = ['target']), pd.DataFrame(y_pred))
     sum += fp*fp_ratio
     y_pred = pd.DataFrame(y_pred)
@@ -41,8 +41,8 @@ if __name__ == "__main__":
     val_data = std.transform(val_data)
     test_data = std.transform(test_data)
 
-    val_data = val_data.iloc[::1,:]
-    train_data1 = train_data1.iloc[::1,:]
+    val_data = val_data
+    train_data1 = train_data1
 
     val_fold = [-1 for _ in range(len(train_data1)) ] + [0 for _ in range(len(val_data))]    
 
