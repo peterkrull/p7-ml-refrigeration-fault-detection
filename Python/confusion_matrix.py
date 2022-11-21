@@ -2,9 +2,10 @@ import matplotlib.pyplot as plt
 import numpy as np
 
 def false_info(conf_matrix):
-    false_positive = round((np.sum(conf_matrix[0,:])-conf_matrix[0,0])/np.sum(conf_matrix[0,:])*100,2)
-    false_negative = round(np.sum(conf_matrix[1:,0])/np.sum(conf_matrix[1:,:])*100,2)
-    print(f"False positives : {false_positive}%\nFalse negatives : {false_negative}%")
+    false_positive = (np.sum(conf_matrix[0,:])-conf_matrix[0,0])/np.sum(conf_matrix[0,:])
+    false_negative = np.sum(conf_matrix[1:,0])/np.sum(conf_matrix[1:,:])
+    print(f"False positives : {round(false_positive*100,2)}%\nFalse negatives : {round(false_negative*100,2)}%")
+    return false_positive,false_negative
 
 def confusion_matrix(conf_matrix : np.matrix, axis_ticks : tuple = None, title : str = "Confusion matrix", normalize = True,save_fig_name : str = None, figsize : tuple = (10,10),eval_labels = False):
     
@@ -19,8 +20,7 @@ def confusion_matrix(conf_matrix : np.matrix, axis_ticks : tuple = None, title :
     # Setup figure
     fig , axs = plt.subplots(figsize=figsize)
    
-   
-    axs.imshow(np.sqrt(conf_matrix),cmap="Greens")
+    axs.imshow(np.sqrt(conf_matrix/conf_matrix.astype(np.float).sum(axis=1)),cmap="Greens")
     axs.set_xlabel("Predicted class")
     axs.set_ylabel("True class")
     axs.set_title(f"{title} : Accuracy {round(accuracy*100,3)}%")
