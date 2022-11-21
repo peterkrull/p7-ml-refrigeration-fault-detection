@@ -11,6 +11,7 @@ from sklearn.model_selection import GridSearchCV
 import standardization 
 import plot_functions as pf
 from sklearn.metrics import make_scorer
+from datetime import datetime
 
 def get_valData(train_data: pd.DataFrame):
     validation_data = pd.DataFrame()
@@ -82,8 +83,8 @@ def PCA_SVM(train_data: pd.DataFrame, val_data: pd.DataFrame, classes: pd.DataFr
     print("Fitting data")
     #Fit svm model to dim red data
     svc = svm.SVC(kernel = 'rbf', decision_function_shape='ovo')
-    gamma_params = [10**x for x in np.linspace(-3,-1, 51)]
-    C_params = [10**x for x in np.linspace(2,4, 51)]
+    gamma_params = [10**x for x in np.linspace(-3,-1, 3)]
+    C_params = [10**x for x in np.linspace(2,4, 3)]
     score = make_scorer(gridsearch_scoring, greater_is_better= True)
     clf = GridSearchCV(svc, {'C' : C_params, 'gamma' : gamma_params}, n_jobs = -1, verbose = 3, scoring = score)
     clf.fit(trans_data.drop('target', axis = 1).to_numpy(), trans_data['target'].to_numpy())
@@ -118,7 +119,7 @@ def PCA_SVM(train_data: pd.DataFrame, val_data: pd.DataFrame, classes: pd.DataFr
     if not test_data.empty:
         print("Classifying test data")
         test_data = pca_class.transform(test_data, 'target')
-        pf.plot_transformation(test_data.iloc[::10, :], file_name= sys.path[0] +"/"+ plt_title + "_actual_val_data.pdf", ec_filepath = 'Python/error_color_coding.json')
+        pf.plot_transformation(test_data.iloc[::10, :], file_name= sys.path[0] +"/"+ plt_title + "_actual_val_data.pdf", ec_filepath = sys.path[0] +'/../Python/error_color_coding.json')
 
 
         pred_val = pd.DataFrame(clf.predict(test_data.drop('target', axis = 1).to_numpy()))
@@ -167,6 +168,10 @@ if __name__ == "__main__":
     val_std = std.transform(validation_data)
     tst_std = std.transform(test_data)
     
+    trn_std = trn_std.iloc[::30,:]
+    val_std = val_std.iloc[::30,:]
+    tst_std = tst_std.iloc[::30,:]
+
     print2file = ""
 
     print2file += PCA_SVM(trn_std, val_std, class_labels, conf_title = 'PCA_SVM', plt_title= 'pca_reduc', test_data= tst_std)
@@ -196,5 +201,6 @@ if __name__ == "__main__":
             print2file += PCA_SVM(trn_std_14, val_std_14, class_labels,test_data= tst_std_14, pca_n = i)
         
 f = open(sys.path[0] + "/pcasvm_grid_search.txt", 'w')
+f.write(str(datetime.now()) + "\n")
 f.write(print2file)
 f.close()

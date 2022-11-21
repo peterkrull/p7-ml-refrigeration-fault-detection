@@ -13,3 +13,4 @@ DataProcessing/send_to_zahra_preproc/Scikit_SVM.py
 DataProcessing/send_to_zahra_preproc/train_fault_all_noise_67.csv
 DataProcessing/send_to_zahra_preproc/val_fault_all_noise_67.csv
 Python/send_to_zahra.zip
+machine learning scripts/pca_reduc.pdf

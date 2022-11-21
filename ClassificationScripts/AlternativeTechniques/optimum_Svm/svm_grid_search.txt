@@ -1,0 +1,2 @@
+2022-11-21 13:29:02.748248
+SVC(C=316.22776601683796, decision_function_shape='ovo', gamma=0.01)

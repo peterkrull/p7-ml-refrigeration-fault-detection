@@ -8,6 +8,7 @@ import sys
 sys.path.append(sys.path[0] + "/../../Python")
 import confusion_matrix2 as confusion_matrix
 import standardization 
+from datetime import datetime
 
 def false_positives(true_target : pd.DataFrame, predicted_target : pd.DataFrame):
     zero_label_index = true_target.loc[true_target['target']==0]
@@ -40,16 +41,16 @@ if __name__ == "__main__":
     val_data = std.transform(val_data)
     test_data = std.transform(test_data)
 
-    val_data = val_data
-    train_data1 = train_data1
+    val_data = val_data.iloc[::15,:]
+    train_data1 = train_data1.iloc[::15,:]
 
     val_fold = [-1 for _ in range(len(train_data1)) ] + [0 for _ in range(len(val_data))]    
 
     optimize_data = pd.concat([train_data1, val_data])
 
     svc = svm.SVC()
-    C_params = [10**x for x in np.linspace(2,4, 51)]
-    gamma_params = [10**x for x in np.linspace(-3,-1, 51)]
+    C_params = [10**x for x in np.linspace(2,4, 5)]
+    gamma_params = [10**x for x in np.linspace(-3,-1, 5)]
     score = make_scorer(gridsearch_scoring, greater_is_better= False)
     ps = PredefinedSplit(val_fold)
     clf = GridSearchCV(svc, {'kernel':['rbf'], 'decision_function_shape':['ovo'], 'C' : C_params, 'gamma' : gamma_params}, n_jobs = -1, verbose = 3, scoring = score, cv = ps)
@@ -60,6 +61,9 @@ if __name__ == "__main__":
 
     confusion_matrix.confusion_matrix(test_data['target'],tst_pred, save_fig_name = sys.path[0] + "/optimum_Svm/optimum_svm_tst.pdf")
 
+    print("Best estimator = " + str(clf.best_estimator_))
+
     f = open(sys.path[0] + "/optimum_Svm/svm_grid_search.txt", 'w')
+    f.write(str(datetime.now()) + "\n")
     f.write(str(clf.best_estimator_))
     f.close()
