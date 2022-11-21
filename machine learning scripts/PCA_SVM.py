@@ -185,6 +185,10 @@ if __name__ == "__main__":
     val_std_14 = std.transform(validation_data_14)
     tst_std_14 = std.transform(test_data_14)
     print(tst_std_14)
+    trn_std_14 = trn_std_14.iloc[::30,:]
+    val_std_14 = val_std_14.iloc[::30,:]
+    tst_std_14 = tst_std_14.iloc[::30,:]
+
 
     print2file += PCA_SVM(trn_std_14, val_std_14, class_labels, conf_title = 'PCA_SVM_14', plt_title= 'pca_reduc_14', test_data= tst_std_14)
 
