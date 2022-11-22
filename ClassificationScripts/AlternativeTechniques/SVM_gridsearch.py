@@ -49,8 +49,8 @@ if __name__ == "__main__":
     optimize_data = pd.concat([train_data1, val_data])
 
     svc = svm.SVC()
-    C_params = [10**x for x in np.linspace(2,4, 3)]
-    gamma_params = [10**x for x in np.linspace(-3,-1, 3)]
+    C_params = [10**x for x in np.linspace(1,5, 101)]
+    gamma_params = [10**x for x in np.linspace(-4,0, 101)]
     score = make_scorer(gridsearch_scoring, greater_is_better= True)
     ps = PredefinedSplit(val_fold)
     clf = GridSearchCV(svc, {'kernel':['rbf'], 'decision_function_shape':['ovo'], 'C' : C_params, 'gamma' : gamma_params}, n_jobs = -1, verbose = 3, scoring = score, cv = ps)
