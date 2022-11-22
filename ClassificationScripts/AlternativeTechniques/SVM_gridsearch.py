@@ -20,10 +20,10 @@ def gridsearch_scoring(y_true : np.array, y_pred : np.array):
     sum = 0
     fp_ratio = .6
     fp = false_positives(pd.DataFrame(y_true, columns = ['target']), pd.DataFrame(y_pred))
-    sum += fp*fp_ratio
+    sum += (1-fp)*fp_ratio
     y_pred = pd.DataFrame(y_pred)
     accuracy = (len(y_pred) - len( y_pred[0].compare(pd.DataFrame(y_true)[0]) ) )  / (len(y_pred) + 0.0001)
-    sum += (1-fp_ratio)/(accuracy+0.0001)
+    sum += (1-fp_ratio)*(accuracy)
     return sum
 
 
@@ -49,9 +49,9 @@ if __name__ == "__main__":
     optimize_data = pd.concat([train_data1, val_data])
 
     svc = svm.SVC()
-    C_params = [10**x for x in np.linspace(2,4, 51)]
-    gamma_params = [10**x for x in np.linspace(-3,-1, 51)]
-    score = make_scorer(gridsearch_scoring, greater_is_better= False)
+    C_params = [10**x for x in np.linspace(2,4, 3)]
+    gamma_params = [10**x for x in np.linspace(-3,-1, 3)]
+    score = make_scorer(gridsearch_scoring, greater_is_better= True)
     ps = PredefinedSplit(val_fold)
     clf = GridSearchCV(svc, {'kernel':['rbf'], 'decision_function_shape':['ovo'], 'C' : C_params, 'gamma' : gamma_params}, n_jobs = -1, verbose = 3, scoring = score, cv = ps)
     #clf = GridSearchCV(svc, {'kernel':['rbf'], 'decision_function_shape':['ovo'], 'C' : C_params, 'gamma' : gamma_params}, n_jobs = -1, verbose = 3)
@@ -64,6 +64,12 @@ if __name__ == "__main__":
     print("Best estimator = " + str(clf.best_estimator_))
 
     f = open(sys.path[0] + "/optimum_Svm/svm_grid_search.txt", 'w')
-    f.write(str(datetime.now()) + "\n")
+    f.write(str(datetime.now()) + "\n\n")
+    f.write(str(clf.cv_results_))
     f.write(str(clf.best_estimator_))
+    f.close()
+
+    cv_log = pd.DataFrame.from_dict(clf.cv_results_)
+    f = open(sys.path[0] + "/optimum_Svm/svm_grid_search_log.json", 'w')
+    f.write(cv_log.to_json())
     f.close()
