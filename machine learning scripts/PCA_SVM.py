@@ -86,8 +86,8 @@ def PCA_SVM(train_data: pd.DataFrame, val_data: pd.DataFrame, classes: pd.DataFr
     print("Fitting data")
     #Fit svm model to dim red data
     svc = svm.SVC(kernel = 'rbf', decision_function_shape='ovo')
-    gamma_params = [10**x for x in np.linspace(-3,-1, 51)]
-    C_params = [10**x for x in np.linspace(2,4, 51)]
+    gamma_params = [10**x for x in np.linspace(-4,0, 51)]
+    C_params = [10**x for x in np.linspace(1,5, 51)]
     score = make_scorer(gridsearch_scoring, greater_is_better= True)
     clf = GridSearchCV(svc, {'C' : C_params, 'gamma' : gamma_params}, n_jobs = -1, verbose = 1, scoring = score)
     clf.fit(trans_data.drop('target', axis = 1).to_numpy(), trans_data['target'].to_numpy())
