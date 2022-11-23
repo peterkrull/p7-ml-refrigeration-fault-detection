@@ -89,7 +89,7 @@ def PCA_SVM(train_data: pd.DataFrame, val_data: pd.DataFrame, classes: pd.DataFr
     gamma_params = [10**x for x in np.linspace(-4,0, 51)]
     C_params = [10**x for x in np.linspace(1,5, 51)]
     score = make_scorer(gridsearch_scoring, greater_is_better= True)
-    clf = GridSearchCV(svc, {'C' : C_params, 'gamma' : gamma_params}, n_jobs = -1, verbose = 1, scoring = score)
+    clf = GridSearchCV(svc, {'C' : C_params, 'gamma' : gamma_params}, n_jobs = -1, verbose = 3.1, scoring = score)
     clf.fit(trans_data.drop('target', axis = 1).to_numpy(), trans_data['target'].to_numpy())
 
     toReturn += "\n\tEstimator = " +  str(clf.best_estimator_)
