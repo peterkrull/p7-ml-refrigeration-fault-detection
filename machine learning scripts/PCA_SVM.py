@@ -86,7 +86,7 @@ def PCA_SVM(train_data: pd.DataFrame, val_data: pd.DataFrame, classes: pd.DataFr
     gamma_params = [10**x for x in np.linspace(-3,-1, 51)]
     C_params = [10**x for x in np.linspace(2,4, 51)]
     score = make_scorer(gridsearch_scoring, greater_is_better= True)
-    clf = GridSearchCV(svc, {'C' : C_params, 'gamma' : gamma_params}, n_jobs = -1, verbose = 3, scoring = score)
+    clf = GridSearchCV(svc, {'C' : C_params, 'gamma' : gamma_params}, n_jobs = -1, verbose = 0, scoring = score)
     clf.fit(trans_data.drop('target', axis = 1).to_numpy(), trans_data['target'].to_numpy())
 
     toReturn += "\n\tEstimator = " +  str(clf.best_estimator_)
@@ -168,9 +168,9 @@ if __name__ == "__main__":
     val_std = std.transform(validation_data)
     tst_std = std.transform(test_data)
     
-    trn_std = trn_std.iloc[::1,:]
-    val_std = val_std.iloc[::1,:]
-    tst_std = tst_std.iloc[::1,:]
+    trn_std = trn_std
+    val_std = val_std
+    tst_std = tst_std
 
     print2file = ""
 
@@ -185,9 +185,9 @@ if __name__ == "__main__":
     val_std_14 = std.transform(validation_data_14)
     tst_std_14 = std.transform(test_data_14)
     print(tst_std_14)
-    trn_std_14 = trn_std_14.iloc[::1,:]
-    val_std_14 = val_std_14.iloc[::1,:]
-    tst_std_14 = tst_std_14.iloc[::1,:]
+    trn_std_14 = trn_std_14
+    val_std_14 = val_std_14
+    tst_std_14 = tst_std_14
 
 
     print2file += PCA_SVM(trn_std_14, val_std_14, class_labels, conf_title = 'PCA_SVM_14', plt_title= 'pca_reduc_14', test_data= tst_std_14)
