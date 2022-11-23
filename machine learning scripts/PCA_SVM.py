@@ -33,13 +33,16 @@ def gridsearch_scoring(y_true : np.array, y_pred : np.array):
     sum = 0
     fp_ratio = .6
     fp = false_positives(pd.DataFrame(y_true, columns = ['target']), pd.DataFrame(y_pred))
-    if fp != 0:
-        sum += fp_ratio*1/fp
-    else:
-        sum += 1*fp_ratio
+    sum += fp_ratio*(1-fp)
+    # if fp != 0:
+    #     sum += fp_ratio*1/fp
+    # else:
+    #     sum += 1*fp_ratio
 
     y_pred = pd.DataFrame(y_pred)
-    sum += (1-fp_ratio)*(len(y_pred) - len( y_pred[0].compare(pd.DataFrame(y_true)[0]) ) )  / len(y_pred)
+    accuracy = (len(y_pred) - len( y_pred[0].compare(pd.DataFrame(y_true)[0]) ) )  / len(y_pred)
+
+    sum += (1-fp_ratio)*accuracy
     return sum
 
 
@@ -86,7 +89,7 @@ def PCA_SVM(train_data: pd.DataFrame, val_data: pd.DataFrame, classes: pd.DataFr
     gamma_params = [10**x for x in np.linspace(-3,-1, 51)]
     C_params = [10**x for x in np.linspace(2,4, 51)]
     score = make_scorer(gridsearch_scoring, greater_is_better= True)
-    clf = GridSearchCV(svc, {'C' : C_params, 'gamma' : gamma_params}, n_jobs = -1, verbose = 0, scoring = score)
+    clf = GridSearchCV(svc, {'C' : C_params, 'gamma' : gamma_params}, n_jobs = -1, verbose = 1, scoring = score)
     clf.fit(trans_data.drop('target', axis = 1).to_numpy(), trans_data['target'].to_numpy())
 
     toReturn += "\n\tEstimator = " +  str(clf.best_estimator_)
