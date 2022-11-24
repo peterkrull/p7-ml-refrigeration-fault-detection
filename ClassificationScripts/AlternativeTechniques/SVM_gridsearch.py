@@ -30,13 +30,13 @@ def gridsearch_scoring(y_true : np.array, y_pred : np.array):
 
 
 if __name__ == "__main__":
-    train_data2 = pd.read_csv(sys.path[0] + "/../../TrainingData/neodata/fault_all_nonoise_67.csv")
+    train_data = pd.read_csv(sys.path[0] + "/../../TrainingData/neodata/fault_all_nonoise_67.csv")
     test_data = pd.read_csv(sys.path[0] + "/../../TestData/neodata/fault_all_nonoise_67.csv")
 
 
     # Split training data into traning and validation data.
-    val_data = train_data2.loc[(train_data2['Tamb']==10) & (train_data2['Tset']==7)]
-    train_data1 = train_data2.loc[(train_data2['Tamb']!=10) | (train_data2['Tset']!=7)]
+    val_data = train_data.loc[(train_data['Tamb']==10) & (train_data['Tset']==7)]
+    train_data1 = train_data.loc[(train_data['Tamb']!=10) | (train_data['Tset']!=7)]
 
     std = standardization.standardization(train_data1, target = 'target')
     train_data1 = std.transform(train_data1)
@@ -82,13 +82,27 @@ if __name__ == "__main__":
 
     ##KFOLD-CROSSVALIDATION##
 
+    train_data2 = pd.read_csv(sys.path[0] + "/../../TrainingData/neodata/11d_setpoints_1200.csv")
+
+    train_data2.iloc[::10,:]
+
+    g_trn = train_data2['setpoint'].to_numpy()
+    train_data2 = train_data2.drop('setpoint', axis = 1)
+
+    std = standardization.standardization(train_data2, target = 'target')
+    train_data2 = std.transform(train_data2)
+    test_data = std.transform(test_data)
+
+
     svc = svm.SVC()
-    C_params = [10**x for x in np.linspace(0,5, 121)]
-    gamma_params = [10**x for x in np.linspace(-4,-1, 81)]
+    #C_params = [10**x for x in np.linspace(0,5, 121)]
+    #gamma_params = [10**x for x in np.linspace(-4,-1, 81)]
+    C_params = [10**x for x in np.linspace(0,5, 3)]
+    gamma_params = [10**x for x in np.linspace(-4,-1, 3)]
     score = make_scorer(gridsearch_scoring, greater_is_better= True)
     ps = PredefinedSplit(val_fold)
     clf = GridSearchCV(svc, {'kernel':['rbf'], 'decision_function_shape':['ovo'], 'C' : C_params, 'gamma' : gamma_params}, n_jobs = -1, verbose = 3, scoring = score, cv =GroupKFold(n_splits=5))
-    clf.fit(optimize_data.drop('target', axis = 1).to_numpy(), optimize_data['target'].to_numpy())
+    clf.fit(train_data2.drop('target', axis = 1).to_numpy(), train_data2['target'].to_numpy(), groups = g_trn)
 
     tst_pred = clf.predict(test_data.drop('target', axis = 1).to_numpy())
 
