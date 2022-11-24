@@ -61,8 +61,8 @@ X_trn = scale.fit_transform(X_trn1)
 X_tst = scale.transform(X_tst1)
 
 #Parameters to search
-C_params = [10**x for x in np.linspace(1,6, 2)]           #Logrithmic svaling of parameters
-gamma_params = [10**x for x in np.linspace(-5,0, 2)]
+C_params = [10**x for x in np.linspace(1,5, 10)]           #Logrithmic svaling of parameters
+gamma_params = [10**x for x in np.linspace(-4,0, 10)]
 
 svc = svm.SVC()
 
