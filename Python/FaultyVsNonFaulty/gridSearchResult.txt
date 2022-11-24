@@ -1,0 +1,16 @@
+2022-11-24 08:42:17.266403
+
+{'mean_fit_time': array([0.26993341, 0.52158828]), 'std_fit_time': array([0.02118381, 0.11268567]), 'mean_score_time': array([0.23657837, 0.09768248]), 'std_score_time': array([0.01660134, 0.02948551]), 'param_C': masked_array(data=[10.0, 100000.0],
+             mask=[False, False],
+       fill_value='?',
+            dtype=object), 'param_decision_function_shape': masked_array(data=['ovo', 'ovo'],
+             mask=[False, False],
+       fill_value='?',
+            dtype=object), 'param_gamma': masked_array(data=[0.0001, 0.0001],
+             mask=[False, False],
+       fill_value='?',
+            dtype=object), 'param_kernel': masked_array(data=['rbf', 'rbf'],
+             mask=[False, False],
+       fill_value='?',
+            dtype=object), 'params': [{'C': 10.0, 'decision_function_shape': 'ovo', 'gamma': 0.0001, 'kernel': 'rbf'}, {'C': 100000.0, 'decision_function_shape': 'ovo', 'gamma': 0.0001, 'kernel': 'rbf'}], 'split0_test_score': array([0.81895729, 0.84549757]), 'split1_test_score': array([0.8204275 , 0.85653201]), 'split2_test_score': array([0.82461534, 0.87923072]), 'split3_test_score': array([0.82265621, 0.8757812 ]), 'split4_test_score': array([0.831619  , 0.86633487]), 'mean_test_score': array([0.82365507, 0.86467527]), 'std_test_score': array([0.00442336, 0.01242621]), 'rank_test_score': array([2, 1])}
+SVC(C=100000.0, decision_function_shape='ovo', gamma=0.0001)
