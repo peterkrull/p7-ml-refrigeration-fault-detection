@@ -52,8 +52,8 @@ train_data_NoFault2 = train_data_NoFault.copy()
 train_data = pd.concat([train_data_fault2,train_data_NoFault2])
 
 #Nameing and standardization
-X_trn1 = train_data.drop(['target'],axis =1).to_numpy()
-X_tst1 = test_data.drop(['target'],axis=1).to_numpy()
+X_trn1 = train_data.drop(['target','setpoint'],axis =1).to_numpy()
+X_tst1 = test_data.drop(['target','setpoint'],axis=1).to_numpy()
 
 y_trn=train_data['target'].to_numpy()
 y_tst=test_data['target'].to_numpy()
@@ -91,19 +91,20 @@ f.close()
 
 dump(clf,'GridSearchBest_lowerAlpha.joblib')
 
-"""
+
 results = pd.read_json('GridSearchLog.json')
-print(results)
+"""
 
 import confusion_matrix2 as confusionMatrix
 
 ## Test if it works
-clf_load = load('GridSearchBest.joblib')
+clf_load = load('GridSearchBest_lowerAlpha.joblib')
 
 y_tst_predict = clf_load.predict(X_tst)
-confusionMatrix.confusion_matrix(y_tst,y_tst_predict,save_fig_name='confMatrix_tst.pdf')
+confusionMatrix.confusion_matrix(y_tst,y_tst_predict,save_fig_name='confMatrix_tst_lowerAlpha.pdf')
 print("Hallo")
 y_trn_predict = clf_load.predict(X_trn)
-confusionMatrix.confusion_matrix(y_trn,y_trn_predict,save_fig_name='confMatrix_trn.pdf')
-"""
+confusionMatrix.confusion_matrix(y_trn,y_trn_predict,save_fig_name='confMatrix_trn_lowerAlpha.pdf')
 
+
+"""

@@ -52,8 +52,8 @@ train_data_NoFault2 = train_data_NoFault.copy()
 train_data = pd.concat([train_data_fault2,train_data_NoFault2])
 
 #Nameing and standardization
-X_trn1 = train_data.drop(['target'],axis =1).to_numpy()
-X_tst1 = test_data.drop(['target'],axis=1).to_numpy()
+X_trn1 = train_data.drop(['target','setpoint'],axis =1).to_numpy()
+X_tst1 = test_data.drop(['target','setpoint'],axis=1).to_numpy()
 
 y_trn=train_data['target'].to_numpy()
 y_tst=test_data['target'].to_numpy()
