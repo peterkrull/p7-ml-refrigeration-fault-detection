@@ -43,18 +43,18 @@ if __name__ == "__main__":
     val_data = std.transform(val_data)
     test_data = std.transform(test_data)
 
-    val_data = val_data.iloc[::10,:]
-    train_data1 = train_data1.iloc[::10,:]
+    val_data = val_data
+    train_data1 = train_data1
 
     val_fold = [-1 for _ in range(len(train_data1)) ] + [0 for _ in range(len(val_data))]    
 
     optimize_data = pd.concat([train_data1, val_data])
 
     svc = svm.SVC()
-    #C_params = [10**x for x in np.linspace(0,5, 121)]
-    #gamma_params = [10**x for x in np.linspace(-4,-1, 81)]
-    C_params = [10**x for x in np.linspace(0,5, 3)]
-    gamma_params = [10**x for x in np.linspace(-4,-1, 3)]
+    C_params = [10**x for x in np.linspace(0,5, 121)]
+    gamma_params = [10**x for x in np.linspace(-4,-1, 81)]
+    #C_params = [10**x for x in np.linspace(0,5, 3)]
+    #gamma_params = [10**x for x in np.linspace(-4,-1, 3)]
     score = make_scorer(gridsearch_scoring, greater_is_better= True)
     ps = PredefinedSplit(val_fold)
     clf = GridSearchCV(svc, {'kernel':['rbf'], 'decision_function_shape':['ovo'], 'C' : C_params, 'gamma' : gamma_params}, n_jobs = -1, verbose = 3, scoring = score, cv = ps)
@@ -84,7 +84,7 @@ if __name__ == "__main__":
 
     train_data2 = pd.read_csv(sys.path[0] + "/../../TrainingData/neodata/11d_setpoints_1200.csv")
 
-    train_data2.iloc[::10,:]
+    train_data2
 
     g_trn = train_data2['setpoint'].to_numpy()
     train_data2 = train_data2.drop('setpoint', axis = 1)
@@ -95,10 +95,10 @@ if __name__ == "__main__":
 
 
     svc = svm.SVC()
-    #C_params = [10**x for x in np.linspace(0,5, 121)]
-    #gamma_params = [10**x for x in np.linspace(-4,-1, 81)]
-    C_params = [10**x for x in np.linspace(0,5, 3)]
-    gamma_params = [10**x for x in np.linspace(-4,-1, 3)]
+    C_params = [10**x for x in np.linspace(0,5, 121)]
+    gamma_params = [10**x for x in np.linspace(-4,-1, 81)]
+    #C_params = [10**x for x in np.linspace(0,5, 3)]
+    #gamma_params = [10**x for x in np.linspace(-4,-1, 3)]
     score = make_scorer(gridsearch_scoring, greater_is_better= True)
     ps = PredefinedSplit(val_fold)
     clf = GridSearchCV(svc, {'kernel':['rbf'], 'decision_function_shape':['ovo'], 'C' : C_params, 'gamma' : gamma_params}, n_jobs = -1, verbose = 3, scoring = score, cv =GroupKFold(n_splits=5))
