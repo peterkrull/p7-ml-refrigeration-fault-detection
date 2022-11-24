@@ -65,10 +65,10 @@ if __name__ == '__main__':
     tst_14_r = lda_reduc_14.transform(tst_14)
     
     
-    #C_params = [10**x for x in np.linspace(0,5, 121)]
-    #gamma_params = [10**x for x in np.linspace(-4,-1, 81)]
-    C_params = [10**x for x in np.linspace(0,5, 3)]
-    gamma_params = [10**x for x in np.linspace(-4,-1, 3)]
+    C_params = [10**x for x in np.linspace(0,5, 121)]
+    gamma_params = [10**x for x in np.linspace(-4,-1, 81)]
+    #C_params = [10**x for x in np.linspace(0,5, 3)]
+    #gamma_params = [10**x for x in np.linspace(-4,-1, 3)]
     svc_11 = svm.SVC()
     score = make_scorer(gridsearch_scoring, greater_is_better= True)
     clf_11 = GridSearchCV(svc_11, {'kernel':['rbf'], 'decision_function_shape':['ovo'], 'C' : C_params, 'gamma' : gamma_params}, n_jobs = -1, verbose = 3, scoring = score)
