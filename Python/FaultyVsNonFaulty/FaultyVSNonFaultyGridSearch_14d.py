@@ -7,9 +7,33 @@ from sklearn.metrics import make_scorer
 from sklearn.model_selection import GridSearchCV,GroupKFold
 from datetime import datetime
 from joblib import dump, load
-from sklearn.decomposition import PCA
 
-####    Load and scale data    ####
+
+
+## Grid search
+
+
+def false_positives(true_target : pd.DataFrame, predicted_target : pd.DataFrame):
+    #Find the false positive rate
+    zero_label_index = true_target.loc[true_target['target']==0]
+    pred_non_fault = predicted_target[predicted_target.index.isin(zero_label_index.index)]
+    false_positive = len(pred_non_fault.loc[pred_non_fault[0] != 0])/(len(pred_non_fault)+0.0001)
+    return false_positive
+
+def gridsearch_scoring(y_true : np.array, y_pred : np.array):
+    #Calculate a score weighing false positives and false negatives
+    sum = 0
+    fp_ratio = .4       # High = False positives is unaccepteble
+    fp = false_positives(pd.DataFrame(y_true, columns = ['target']), pd.DataFrame(y_pred))
+    sum += (1-fp)*fp_ratio
+    y_pred = pd.DataFrame(y_pred)
+    accuracy = (len(y_pred) - len( y_pred[0].compare(pd.DataFrame(y_true)[0]) ) )  / (len(y_pred) + 0.0001)
+    sum += (1-fp_ratio)*(accuracy)
+    return sum
+
+
+
+# Load training data
 train_data1 = pd.read_csv(sys.path[0] + "/../../TrainingData/neodata/14d_setpoints_1200.csv")
 test_data = pd.read_csv(sys.path[0] + "/../../TestData/neodata/14d_setpoints_100.csv")
 
@@ -42,73 +66,44 @@ X_trn = scale.fit_transform(X_trn1)
 X_tst = scale.transform(X_tst1)
 
 
-####    Score functions and grid search settings    ####
-#Calculate share of false positives
-def false_positives(true_target : pd.DataFrame, predicted_target : pd.DataFrame):
-    #Find the false positive rate
-    zero_label_index = true_target.loc[true_target['target']==0]
-    pred_non_fault = predicted_target[predicted_target.index.isin(zero_label_index.index)]
-    false_positive = len(pred_non_fault.loc[pred_non_fault[0] != 0])/(len(pred_non_fault)+0.0001)
-    return false_positive
-
-#Calculate score
-def gridsearch_scoring(y_true : np.array, y_pred : np.array):
-    #Calculate a score weighing false positives and false negatives
-    sum = 0
-    fp_ratio = .4       # High = False positives is unaccepteble
-    fp = false_positives(pd.DataFrame(y_true, columns = ['target']), pd.DataFrame(y_pred))
-    sum += (1-fp)*fp_ratio
-    y_pred = pd.DataFrame(y_pred)
-    accuracy = (len(y_pred) - len( y_pred[0].compare(pd.DataFrame(y_true)[0]) ) )  / (len(y_pred) + 0.0001)
-    sum += (1-fp_ratio)*(accuracy)
-    return sum
-#Grid search parameters
+#Parameters to search
 C_params = [10**x for x in np.linspace(1,5, 50)]           #Logrithmic svaling of parameters
 gamma_params = [10**x for x in np.linspace(-4,0, 50)]
 
-####    Grid Search    ####
-for dim in [14,13,12,11,10,9,8,7,6,5,4,3,2,1]
+svc = svm.SVC()
 
-    #PCA dim reduction
-    reducer = PCA(n_components=dim)
-    X_trn_pca = PCA.fit_transform(X_trn)
-    X_tst_pca = PCA.fit_transform(X_tst)
+score = make_scorer(gridsearch_scoring, greater_is_better= True)
 
-    #Preform gridSearch
-    svc = svm.SVC()
-    score = make_scorer(gridsearch_scoring, greater_is_better= True)
-    clf = GridSearchCV(svc,{'kernel':['rbf'], 'decision_function_shape':['ovo'], 'C' : C_params, 'gamma' : gamma_params}, n_jobs=-1, verbose=3, scoring = score,cv =GroupKFold(n_splits=5))
-    clf.fit(X_trn,y_trn,groups = g_trn)
+clf = GridSearchCV(svc,{'kernel':['rbf'], 'decision_function_shape':['ovo'], 'C' : C_params, 'gamma' : gamma_params}, n_jobs=-1, verbose=3, scoring = score,cv =GroupKFold(n_splits=5))
+clf.fit(X_trn,y_trn,groups = g_trn)
 
-    f = open(sys.path[0] + "/gridSearchResult_14d.txt", 'w')
-    f.write(str(datetime.now()) + "\n\n")
-    f.write(str(clf.cv_results_))
-    f.write('\n')
-    f.write(str(clf.best_estimator_))
-    f.close()
+f = open(sys.path[0] + "/gridSearchResult_14d.txt", 'w')
+f.write(str(datetime.now()) + "\n\n")
+f.write(str(clf.cv_results_))
+f.write('\n')
+f.write(str(clf.best_estimator_))
+f.close()
 
-    cv_log = pd.DataFrame.from_dict(clf.cv_results_)
-    f = open(sys.path[0] + "/GridSearchLog_14d.json", 'w')
-    f.write(cv_log.to_json())
-    f.close()
+cv_log = pd.DataFrame.from_dict(clf.cv_results_)
+f = open(sys.path[0] + "/GridSearchLog_14d.json", 'w')
+f.write(cv_log.to_json())
+f.close()
 
-    dump(clf,'GridSearchBest_14d.joblib')
+dump(clf,'GridSearchBest_14d.joblib')
 
+"""
+results = pd.read_json('GridSearchLog.json')
+print(results)
 
-    results = pd.read_json('GridSearchLog.json')
-    print(results)
+import confusion_matrix2 as confusionMatrix
 
+## Test if it works
+clf_load = load('GridSearchBest.joblib')
 
-    """
-    import confusion_matrix2 as confusionMatrix
-
-    ## Test if it works
-    clf_load = load('GridSearchBest_14d.joblib')
-
-    y_tst_predict = clf_load.predict(X_tst)
-    confusionMatrix.confusion_matrix(y_tst,y_tst_predict,save_fig_name='confMatrix_tst_14d.pdf')
-    print("Hallo")
-    y_trn_predict = clf_load.predict(X_trn)
-    confusionMatrix.confusion_matrix(y_trn,y_trn_predict,save_fig_name='confMatrix_trn_14d.pdf')
-    """
+y_tst_predict = clf_load.predict(X_tst)
+confusionMatrix.confusion_matrix(y_tst,y_tst_predict,save_fig_name='confMatrix_tst.pdf')
+print("Hallo")
+y_trn_predict = clf_load.predict(X_trn)
+confusionMatrix.confusion_matrix(y_trn,y_trn_predict,save_fig_name='confMatrix_trn.pdf')
+"""
 
