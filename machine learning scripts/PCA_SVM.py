@@ -86,8 +86,8 @@ def PCA_SVM(train_data: pd.DataFrame, val_data: pd.DataFrame, classes: pd.DataFr
     print("Fitting data")
     #Fit svm model to dim red data
     svc = svm.SVC(kernel = 'rbf', decision_function_shape='ovo')
-    gamma_params = [10**x for x in np.linspace(-4,0, 51)]
-    C_params = [10**x for x in np.linspace(1,5, 51)]
+    gamma_params = [10**x for x in np.linspace(-4,-1, 31)]
+    C_params = [10**x for x in np.linspace(1,5, 31)]
     score = make_scorer(gridsearch_scoring, greater_is_better= True)
     clf = GridSearchCV(svc, {'C' : C_params, 'gamma' : gamma_params}, n_jobs = -1, verbose = 3.1, scoring = score)
     clf.fit(trans_data.drop('target', axis = 1).to_numpy(), trans_data['target'].to_numpy())
@@ -122,7 +122,8 @@ def PCA_SVM(train_data: pd.DataFrame, val_data: pd.DataFrame, classes: pd.DataFr
     if not test_data.empty:
         print("Classifying test data")
         test_data = pca_class.transform(test_data, 'target')
-        pf.plot_transformation(test_data.iloc[::10, :], file_name= sys.path[0] +"/"+ plt_title + "_actual_val_data.pdf", ec_filepath = sys.path[0] +'/../Python/error_color_coding.json')
+        if pca_n == 2:
+            pf.plot_transformation(test_data.iloc[::10, :], file_name= sys.path[0] +"/"+ plt_title + "_actual_val_data.pdf", ec_filepath = sys.path[0] +'/../Python/error_color_coding.json')
 
 
         pred_val = pd.DataFrame(clf.predict(test_data.drop('target', axis = 1).to_numpy()))
@@ -171,8 +172,8 @@ if __name__ == "__main__":
     val_std = std.transform(validation_data)
     tst_std = std.transform(test_data)
     
-    trn_std = trn_std
-    val_std = val_std
+    trn_std = trn_std.iloc[::2,:]
+    val_std = val_std.iloc[::4,:]
     tst_std = tst_std
 
     print2file = ""
@@ -188,8 +189,8 @@ if __name__ == "__main__":
     val_std_14 = std.transform(validation_data_14)
     tst_std_14 = std.transform(test_data_14)
     print(tst_std_14)
-    trn_std_14 = trn_std_14
-    val_std_14 = val_std_14
+    trn_std_14 = trn_std_14.iloc[::2,:]
+    val_std_14 = val_std_14.iloc[::4,:]
     tst_std_14 = tst_std_14
 
 
