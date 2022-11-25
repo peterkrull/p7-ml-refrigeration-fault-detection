@@ -8,10 +8,15 @@ from sklearn.model_selection import GridSearchCV,GroupKFold
 from datetime import datetime
 from joblib import dump, load
 from sklearn.decomposition import PCA
+# Set correct working directory
+import sys
+sys.path.append(sys.path[0] + "/../../../Python")
+
+import confusion_matrix2 as confusionMatrix
 
 ####    Load and scale data    ####
-train_data1 = pd.read_csv(sys.path[0] + "/../../TrainingData/neodata/14d_setpoints_1200.csv")
-test_data = pd.read_csv(sys.path[0] + "/../../TestData/neodata/14d_setpoints_100.csv")
+train_data1 = pd.read_csv(sys.path[0] + "/../../../TrainingData/neodata/14d_setpoints_1200.csv")
+test_data = pd.read_csv(sys.path[0] + "/../../../TestData/neodata/14d_setpoints_100.csv")
 
 # Setting all fault targets to 1
 train_data1.loc[train_data1['target']!=0,'target'] = 1
@@ -67,12 +72,12 @@ C_params = [10**x for x in np.linspace(1,5, 50)]           #Logrithmic svaling o
 gamma_params = [10**x for x in np.linspace(-4,0, 50)]
 
 ####    Grid Search    ####
-for dim in [14,13,12,11,10,9,8,7,6,5,4,3,2,1]
+for dim in [14,13,12,11,10,9,8,7,6,5,4,3,2,1]:
 
     #PCA dim reduction
     reducer = PCA(n_components=dim)
-    X_trn_pca = PCA.fit_transform(X_trn)
-    X_tst_pca = PCA.fit_transform(X_tst)
+    X_trn_pca = reducer.fit_transform(X_trn)
+    X_tst_pca = reducer.fit_transform(X_tst)
 
     #Preform gridSearch
     svc = svm.SVC()
@@ -80,7 +85,7 @@ for dim in [14,13,12,11,10,9,8,7,6,5,4,3,2,1]
     clf = GridSearchCV(svc,{'kernel':['rbf'], 'decision_function_shape':['ovo'], 'C' : C_params, 'gamma' : gamma_params}, n_jobs=-1, verbose=3, scoring = score,cv =GroupKFold(n_splits=5))
     clf.fit(X_trn,y_trn,groups = g_trn)
 
-    f = open(sys.path[0] + "/gridSearchResult_14d.txt", 'w')
+    f = open(sys.path[0] +"/GridSearchResult/" + f"/{dim}_14dGrid.txt", 'w')
     f.write(str(datetime.now()) + "\n\n")
     f.write(str(clf.cv_results_))
     f.write('\n')
@@ -88,27 +93,19 @@ for dim in [14,13,12,11,10,9,8,7,6,5,4,3,2,1]
     f.close()
 
     cv_log = pd.DataFrame.from_dict(clf.cv_results_)
-    f = open(sys.path[0] + "/GridSearchLog_14d.json", 'w')
+    f = open(sys.path[0] +"/GridSearchResult/" +f"/{dim}_14dGrid.json", 'w')
     f.write(cv_log.to_json())
     f.close()
 
-    dump(clf,'GridSearchBest_14d.joblib')
+    dump(clf,sys.path[0] +"/GridSearchResult/"+f'{dim}_14Grid.joblib')
 
 
-    results = pd.read_json('GridSearchLog.json')
-    print(results)
+    ## Print result
+    clf_load = load(sys.path[0] +"/GridSearchResult/"+f'{dim}_14Grid.joblib')
 
-
-    """
-    import confusion_matrix2 as confusionMatrix
-
-    ## Test if it works
-    clf_load = load('GridSearchBest_14d.joblib')
+    y_trn_predict = clf_load.predict(X_trn)
+    confusionMatrix.confusion_matrix(y_trn,y_trn_predict,save_fig_name=sys.path[0] +"/GridSearchResult/"+f'{dim}_conf_trn_14Grid.pdf')
 
     y_tst_predict = clf_load.predict(X_tst)
-    confusionMatrix.confusion_matrix(y_tst,y_tst_predict,save_fig_name='confMatrix_tst_14d.pdf')
-    print("Hallo")
-    y_trn_predict = clf_load.predict(X_trn)
-    confusionMatrix.confusion_matrix(y_trn,y_trn_predict,save_fig_name='confMatrix_trn_14d.pdf')
-    """
-
+    confusionMatrix.confusion_matrix(y_tst,y_tst_predict,save_fig_name=sys.path[0] +"/GridSearchResult/"+f'{dim}_conf_tst_14Grid.pdf')
+    print(f'dim:{dim} finished')
