@@ -8,6 +8,7 @@ from sklearn.model_selection import GridSearchCV,GroupKFold
 from datetime import datetime
 from joblib import dump, load
 from sklearn.decomposition import PCA
+import matplotlib.pyplot as plt
 # Set correct working directory
 import sys
 sys.path.append(sys.path[0] + "/../../../Python")
@@ -109,3 +110,4 @@ for dim in range(1,15):
     y_tst_predict = clf_load.predict(X_tst)
     confusionMatrix.confusion_matrix(y_tst,y_tst_predict,save_fig_name=sys.path[0] +"/GridSearchResult/"+f'{dim}_conf_tst_14Grid.pdf')
     print(f'dim:{dim} finished')
+    plt.close()
