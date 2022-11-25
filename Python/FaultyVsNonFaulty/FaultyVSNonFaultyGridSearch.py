@@ -64,7 +64,7 @@ g_tst = test_data['setpoint'].to_numpy()
 scale = StandardScaler()
 X_trn = scale.fit_transform(X_trn1)
 X_tst = scale.transform(X_tst1)
-
+"""
 
 #Parameters to search
 C_params = [10**x for x in np.linspace(1,5, 50)]           #Logrithmic svaling of parameters
@@ -107,4 +107,3 @@ y_trn_predict = clf_load.predict(X_trn)
 confusionMatrix.confusion_matrix(y_trn,y_trn_predict,save_fig_name='confMatrix_trn_lowerAlpha.pdf')
 
 
-"""
