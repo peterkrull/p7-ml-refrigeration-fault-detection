@@ -65,7 +65,7 @@ scale = StandardScaler()
 X_trn = scale.fit_transform(X_trn1)
 X_tst = scale.transform(X_tst1)
 
-
+"""
 #Parameters to search
 C_params = [10**x for x in np.linspace(1,5, 50)]           #Logrithmic svaling of parameters
 gamma_params = [10**x for x in np.linspace(-4,0, 50)]
@@ -98,12 +98,12 @@ print(results)
 import confusion_matrix2 as confusionMatrix
 
 ## Test if it works
-clf_load = load('GridSearchBest.joblib')
+clf_load = load('GridSearchBest_14d.joblib')
 
 y_tst_predict = clf_load.predict(X_tst)
-confusionMatrix.confusion_matrix(y_tst,y_tst_predict,save_fig_name='confMatrix_tst.pdf')
+confusionMatrix.confusion_matrix(y_tst,y_tst_predict,save_fig_name='confMatrix_tst_14d.pdf')
 print("Hallo")
 y_trn_predict = clf_load.predict(X_trn)
-confusionMatrix.confusion_matrix(y_trn,y_trn_predict,save_fig_name='confMatrix_trn.pdf')
-"""
+confusionMatrix.confusion_matrix(y_trn,y_trn_predict,save_fig_name='confMatrix_trn_14d.pdf')
+
 
