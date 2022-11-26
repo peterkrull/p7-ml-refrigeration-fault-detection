@@ -73,7 +73,7 @@ C_params = [10**x for x in np.linspace(1,5, 1)]           #Logrithmic svaling of
 gamma_params = [10**x for x in np.linspace(-4,0, 1)]
 
 ####    Grid Search    ####
-for dim in range(2,10):
+for dim in range(5,15):
 
     #PCA dim reduction
     reducer = PCA(n_components=dim)
