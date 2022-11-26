@@ -69,8 +69,8 @@ def gridsearch_scoring(y_true : np.array, y_pred : np.array):
     sum += (1-fp_ratio)*(accuracy)
     return sum
 #Grid search parameters
-C_params = [10**x for x in np.linspace(1,5, 1)]           #Logrithmic svaling of parameters
-gamma_params = [10**x for x in np.linspace(-4,0, 1)]
+C_params = [10**x for x in np.linspace(1,5, 50)]           #Logrithmic svaling of parameters
+gamma_params = [10**x for x in np.linspace(-4,0, 50)]
 
 ####    Grid Search    ####
 for dim in range(5,15):
