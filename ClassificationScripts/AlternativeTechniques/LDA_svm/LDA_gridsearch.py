@@ -31,16 +31,17 @@ def gridsearch_scoring(y_true : np.array, y_pred : np.array):
 
 
 if __name__ == '__main__':
-    train_11 = pd.read_csv(sys.path[0] + '/../../../TrainingData/neodata/fault_all_nonoise_67.csv')
-    test_11 = pd.read_csv(sys.path[0] + '/../../../TestData/neodata/fault_all_nonoise_67.csv')
-    train_14 = pd.read_csv(sys.path[0] + '/../../../TrainingData/neodata/14d_setpoints_1200.csv')
-    test_14 = pd.read_csv(sys.path[0] + '/../../../TestData/neodata/14d_setpoints_100.csv')
-    train_14 = train_14.drop('setpoint', axis = 1)
-    test_14 = test_14.drop('setpoint', axis = 1)
+    train_11 = pd.read_csv(sys.path[0] + '/../../../TrainingData/neodata/11d_setpoints_1200.csv')
+    test_11 = pd.read_csv(sys.path[0] + '/../../../TestData/neodata/11d_setpoints_100.csv')
+    #train_14 = pd.read_csv(sys.path[0] + '/../../../TrainingData/neodata/14d_setpoints_1200.csv')
+    #test_14 = pd.read_csv(sys.path[0] + '/../../../TestData/neodata/14d_setpoints_100.csv')
+    g_trn = train_11['setpoint']
+    train_11 = train_11.drop('setpoint', axis = 1)
+    test_11 = test_11.drop('setpoint', axis = 1)
 
     train_11 = train_11
-    train_14 = train_14
-    test_14 = test_14
+    # train_14 = train_14
+    # test_14 = test_14
     test_11 = test_11
 
 
@@ -49,70 +50,70 @@ if __name__ == '__main__':
     tst_11 = std11.transform(test_11)    
 
 
-    print(train_14.columns)
-    std14 = standardization.standardization(train_14, target = 'target')
-    trn_14 = std14.transform(train_14)
-    tst_14 = std14.transform(test_14)    
+    # print(train_14.columns)
+    # std14 = standardization.standardization(train_14, target = 'target')
+    # trn_14 = std14.transform(train_14)
+    # tst_14 = std14.transform(test_14)    
 
 
 
     lda_reduc_11 = LDA_reducer(trn_11,5, target_id = 'target', scree_plot = False)
-    lda_reduc_14 = LDA_reducer(trn_14, 5, target_id = 'target', scree_plot = False)
+    #lda_reduc_14 = LDA_reducer(trn_14, 5, target_id = 'target', scree_plot = False)
 
     trn_11_r = lda_reduc_11.transform(trn_11)
     tst_11_r = lda_reduc_11.transform(tst_11)
-    trn_14_r = lda_reduc_14.transform(trn_14)
-    tst_14_r = lda_reduc_14.transform(tst_14)
+    # trn_14_r = lda_reduc_14.transform(trn_14)
+    # tst_14_r = lda_reduc_14.transform(tst_14)
     
     
     C_params = [10**x for x in np.linspace(0,5, 121)]
     gamma_params = [10**x for x in np.linspace(-4,-1, 81)]
-    #C_params = [10**x for x in np.linspace(0,5, 3)]
-    #gamma_params = [10**x for x in np.linspace(-4,-1, 3)]
+    C_params = [10**x for x in np.linspace(0,5, 3)]
+    gamma_params = [10**x for x in np.linspace(-4,-1, 3)]
     svc_11 = svm.SVC()
     score = make_scorer(gridsearch_scoring, greater_is_better= True)
-    clf_11 = GridSearchCV(svc_11, {'kernel':['rbf'], 'decision_function_shape':['ovo'], 'C' : C_params, 'gamma' : gamma_params}, n_jobs = -1, verbose = 3, scoring = score)
-    clf_11.fit(trn_11_r.drop('target', axis = 1).to_numpy(), trn_11_r['target'].to_numpy())
+    clf_11 = GridSearchCV(svc_11, {'kernel':['rbf'], 'decision_function_shape':['ovo'], 'C' : C_params, 'gamma' : gamma_params}, n_jobs = -1, verbose = 3, scoring = score,cv =GroupKFold(n_splits=5))
+    clf_11.fit(trn_11_r.drop('target', axis = 1).to_numpy(), trn_11_r['target'].to_numpy(), groups = g_trn)
     tst_pred_11 = clf_11.predict(tst_11_r.drop('target', axis = 1).to_numpy())
 
-    svc_14 = svm.SVC()
-    clf_14 = GridSearchCV(svc_14, {'kernel':['rbf'], 'decision_function_shape':['ovo'], 'C' : C_params, 'gamma' : gamma_params}, n_jobs = -1, verbose = 3, scoring = score)
-    clf_14.fit(trn_14_r.drop('target', axis = 1).to_numpy(), trn_14_r['target'].to_numpy())
-    tst_pred_14 = clf_14.predict(tst_14_r.drop('target', axis = 1).to_numpy())
+    # svc_14 = svm.SVC()
+    # clf_14 = GridSearchCV(svc_14, {'kernel':['rbf'], 'decision_function_shape':['ovo'], 'C' : C_params, 'gamma' : gamma_params}, n_jobs = -1, verbose = 3, scoring = score)
+    # clf_14.fit(trn_14_r.drop('target', axis = 1).to_numpy(), trn_14_r['target'].to_numpy())
+    # tst_pred_14 = clf_14.predict(tst_14_r.drop('target', axis = 1).to_numpy())
 
     
-    confusion_matrix.confusion_matrix(tst_11_r['target'],tst_pred_11, save_fig_name = sys.path[0] + "/optimum_ldasvm11_tst_confmat.pdf")
+    confusion_matrix.confusion_matrix(tst_11_r['target'],tst_pred_11, save_fig_name = sys.path[0] + "/optimum_ldasvm11_tst_confmat_kfold.pdf")
 
     print("Best estimator = " + str(clf_11.best_estimator_))
 
-    f = open(sys.path[0] + "/ldasvm11.txt", 'w')
+    f = open(sys.path[0] + "/ldasvm11_kfold.txt", 'w')
     f.write(str(datetime.now()) + "\n\n")
     f.write(str(clf_11.cv_results_))
     f.write("\n\n" + str(clf_11.best_estimator_))
     f.close()
 
     cv_log = pd.DataFrame.from_dict(clf_11.cv_results_)
-    f = open(sys.path[0] + "/lda_svm11_log.json", 'w')
+    f = open(sys.path[0] + "/lda_svm11_log_kfold.json", 'w')
     f.write(cv_log.to_json())
     f.close()
-    dump(clf_11,sys.path[0] + '/model_ldasvm_11.joblib')
+    dump(clf_11,sys.path[0] + '/model_ldasvm_11_kfold.joblib')
 
 
 
 
-    confusion_matrix.confusion_matrix(tst_14_r['target'],tst_pred_14, save_fig_name = sys.path[0] + "/optimum_ldasvm14_tst_confmat.pdf")
+    #confusion_matrix.confusion_matrix(tst_14_r['target'],tst_pred_14, save_fig_name = sys.path[0] + "/optimum_ldasvm14_tst_confmat.pdf")
 
-    print("Best estimator = " + str(clf_14.best_estimator_))
+    #print("Best estimator = " + str(clf_14.best_estimator_))
 
-    f = open(sys.path[0] + "/ldasvm14.txt", 'w')
-    f.write(str(datetime.now()) + "\n\n")
-    f.write(str(clf_14.cv_results_))
-    f.write("\n\n" + str(clf_14.best_estimator_))
-    f.close()
+    # f = open(sys.path[0] + "/ldasvm14.txt", 'w')
+    # f.write(str(datetime.now()) + "\n\n")
+    # f.write(str(clf_14.cv_results_))
+    # f.write("\n\n" + str(clf_14.best_estimator_))
+    # f.close()
 
-    cv_log = pd.DataFrame.from_dict(clf_14.cv_results_)
-    f = open(sys.path[0] + "/lda_svm14_log.json", 'w')
-    f.write(cv_log.to_json())
-    f.close()
-    dump(clf_14,sys.path[0] + '/model_ldasvm_14.joblib')
+    # cv_log = pd.DataFrame.from_dict(clf_14.cv_results_)
+    # f = open(sys.path[0] + "/lda_svm14_log.json", 'w')
+    # f.write(cv_log.to_json())
+    # f.close()
+    # dump(clf_14,sys.path[0] + '/model_ldasvm_14.joblib')
 

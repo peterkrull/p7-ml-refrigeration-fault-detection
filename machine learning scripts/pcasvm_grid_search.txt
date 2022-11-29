@@ -1,8 +1,191 @@
+2022-11-25 18:21:39.431111
 PCA_SVM, pca_n = 2, dim dataset = 11
-	Preserved eigenvalues = 70.23
-	Estimator = SVC(C=0.1, decision_function_shape='ovo', gamma=100.0)
-	Validation Accuracy = 0.6157489638839551
-	Validation false positives = 0.037037037037037035
-	Test accuracy = 0.05319148936170213
+	Preserved eigenvalues = 69.91
+	Estimator = SVC(C=100000.0, decision_function_shape='ovo', gamma=0.1)
+	Validation Accuracy = 0.6591914087176247
+	Validation false positives = 0.6456953642384106
+	Test accuracy = 0.06396588486140725
+	Test false positives = 1.0
+
+PCA_SVM, pca_n = 2, dim dataset = 14
+	Preserved eigenvalues = 74.63
+	Estimator = SVC(C=73564.22544596421, decision_function_shape='ovo', gamma=0.1)
+	Validation Accuracy = 0.7987301587301587
+	Validation false positives = 0.5533333333333333
+	Test accuracy = 0.02
+	Test false positives = 1.0
+
+PCA_SVM, pca_n = 3, dim dataset = 11
+	Preserved eigenvalues = 79.04
+	Estimator = SVC(C=100000.0, decision_function_shape='ovo', gamma=0.07943282347242822)
+	Validation Accuracy = 0.8845546430827542
+	Validation false positives = 0.3576158940397351
+	Test accuracy = 0.03127221037668799
+	Test false positives = 1.0
+
+PCA_SVM, pca_n = 3, dim dataset = 14
+	Preserved eigenvalues = 82.18
+	Estimator = SVC(C=100000.0, decision_function_shape='ovo', gamma=0.1)
+	Validation Accuracy = 0.9304761904761905
+	Validation false positives = 0.09
+	Test accuracy = 0.02619047619047619
+	Test false positives = 1.0
+
+PCA_SVM, pca_n = 4, dim dataset = 11
+	Preserved eigenvalues = 87.65
+	Estimator = SVC(C=73564.22544596421, decision_function_shape='ovo',
+    gamma=0.001995262314968879)
+	Validation Accuracy = 0.768319646241314
+	Validation false positives = 0.6026490066225165
+	Test accuracy = 0.2857142857142857
+	Test false positives = 1.0
+
+PCA_SVM, pca_n = 4, dim dataset = 14
+	Preserved eigenvalues = 89.07
+	Estimator = SVC(C=100000.0, decision_function_shape='ovo', gamma=0.1)
+	Validation Accuracy = 0.9446031746031746
+	Validation false positives = 0.08666666666666667
+	Test accuracy = 0.09523809523809523
+	Test false positives = 1.0
+
+PCA_SVM, pca_n = 5, dim dataset = 11
+	Preserved eigenvalues = 94.38
+	Estimator = SVC(C=1847.8497974222907, decision_function_shape='ovo',
+    gamma=0.003981071705534973)
+	Validation Accuracy = 0.850442198357549
+	Validation false positives = 0.4105960264900662
+	Test accuracy = 0.5238095238095238
+	Test false positives = 1.0
+
+PCA_SVM, pca_n = 5, dim dataset = 14
+	Preserved eigenvalues = 94.48
+	Estimator = SVC(C=100000.0, decision_function_shape='ovo', gamma=0.1)
+	Validation Accuracy = 0.9492063492063492
+	Validation false positives = 0.07666666666666666
+	Test accuracy = 0.2857142857142857
+	Test false positives = 1.0
+
+PCA_SVM, pca_n = 6, dim dataset = 11
+	Preserved eigenvalues = 96.51
+	Estimator = SVC(C=29286.445646252374, decision_function_shape='ovo',
+    gamma=0.0007943282347242813)
+	Validation Accuracy = 0.888660770688566
+	Validation false positives = 0.5099337748344371
+	Test accuracy = 0.5238095238095238
+	Test false positives = 1.0
+
+PCA_SVM, pca_n = 6, dim dataset = 14
+	Preserved eigenvalues = 96.39
+	Estimator = SVC(C=100000.0, decision_function_shape='ovo', gamma=0.1)
+	Validation Accuracy = 0.9519047619047619
+	Validation false positives = 0.07
+	Test accuracy = 0.3333333333333333
+	Test false positives = 1.0
+
+PCA_SVM, pca_n = 7, dim dataset = 11
+	Preserved eigenvalues = 98.01
+	Estimator = SVC(C=3414.5488738336007, decision_function_shape='ovo',
+    gamma=0.002511886431509582)
+	Validation Accuracy = 0.8975047378395452
+	Validation false positives = 0.5033112582781457
+	Test accuracy = 0.7334754797441365
+	Test false positives = 1.0
+
+PCA_SVM, pca_n = 7, dim dataset = 14
+	Preserved eigenvalues = 97.92
+	Estimator = SVC(C=100000.0, decision_function_shape='ovo', gamma=0.1)
+	Validation Accuracy = 0.9528571428571428
+	Validation false positives = 0.07666666666666666
+	Test accuracy = 0.38095238095238093
+	Test false positives = 1.0
+
+PCA_SVM, pca_n = 8, dim dataset = 11
+	Preserved eigenvalues = 99.23
+	Estimator = SVC(C=8576.958985908937, decision_function_shape='ovo',
+    gamma=0.0012589254117941675)
+	Validation Accuracy = 0.9022425773847126
+	Validation false positives = 0.5033112582781457
+	Test accuracy = 0.8571428571428571
+	Test false positives = 1.0
+
+PCA_SVM, pca_n = 8, dim dataset = 14
+	Preserved eigenvalues = 98.98
+	Estimator = SVC(C=100000.0, decision_function_shape='ovo', gamma=0.1)
+	Validation Accuracy = 0.9520634920634921
+	Validation false positives = 0.07333333333333333
+	Test accuracy = 0.47619047619047616
+	Test false positives = 1.0
+
+PCA_SVM, pca_n = 9, dim dataset = 11
+	Preserved eigenvalues = 99.99
+	Estimator = SVC(C=11659.144011798311, decision_function_shape='ovo', gamma=0.001)
+	Validation Accuracy = 0.9020846493998737
+	Validation false positives = 0.5662251655629139
+	Test accuracy = 0.8571428571428571
+	Test false positives = 1.0
+
+PCA_SVM, pca_n = 9, dim dataset = 14
+	Preserved eigenvalues = 99.61
+	Estimator = SVC(C=100000.0, decision_function_shape='ovo', gamma=0.1)
+	Validation Accuracy = 0.9531746031746032
+	Validation false positives = 0.07333333333333333
+	Test accuracy = 0.47619047619047616
+	Test false positives = 1.0
+
+PCA_SVM, pca_n = 10, dim dataset = 11
+	Preserved eigenvalues = 100.0
+	Estimator = SVC(C=21544.346900318866, decision_function_shape='ovo', gamma=0.001)
+	Validation Accuracy = 0.90698041692988
+	Validation false positives = 0.5
+	Test accuracy = 0.9047619047619048
+	Test false positives = 1.0
+
+PCA_SVM, pca_n = 10, dim dataset = 14
+	Preserved eigenvalues = 99.91
+	Estimator = SVC(C=100000.0, decision_function_shape='ovo', gamma=0.1)
+	Validation Accuracy = 0.9533333333333334
+	Validation false positives = 0.07333333333333333
+	Test accuracy = 0.47619047619047616
+	Test false positives = 1.0
+
+PCA_SVM, pca_n = 11, dim dataset = 11
+	Preserved eigenvalues = 100.0
+	Estimator = SVC(C=4641.588833612777, decision_function_shape='ovo',
+    gamma=0.001995262314968879)
+	Validation Accuracy = 0.9057169930511687
+	Validation false positives = 0.5033112582781457
+	Test accuracy = 0.8095238095238095
+	Test false positives = 1.0
+
+PCA_SVM, pca_n = 11, dim dataset = 14
+	Preserved eigenvalues = 99.99
+	Estimator = SVC(C=100000.0, decision_function_shape='ovo', gamma=0.1)
+	Validation Accuracy = 0.9534920634920635
+	Validation false positives = 0.07
+	Test accuracy = 0.47619047619047616
+	Test false positives = 1.0
+
+PCA_SVM, pca_n = 12, dim dataset = 14
+	Preserved eigenvalues = 100.0
+	Estimator = SVC(C=100000.0, decision_function_shape='ovo', gamma=0.1)
+	Validation Accuracy = 0.9536507936507936
+	Validation false positives = 0.06666666666666667
+	Test accuracy = 0.47619047619047616
+	Test false positives = 1.0
+
+PCA_SVM, pca_n = 13, dim dataset = 14
+	Preserved eigenvalues = 100.0
+	Estimator = SVC(C=100000.0, decision_function_shape='ovo', gamma=0.1)
+	Validation Accuracy = 0.9536507936507936
+	Validation false positives = 0.06666666666666667
+	Test accuracy = 0.47619047619047616
+	Test false positives = 1.0
+
+PCA_SVM, pca_n = 14, dim dataset = 14
+	Preserved eigenvalues = 100.0
+	Estimator = SVC(C=100000.0, decision_function_shape='ovo', gamma=0.1)
+	Validation Accuracy = 0.9533333333333334
+	Validation false positives = 0.07333333333333333
+	Test accuracy = 0.47619047619047616
 	Test false positives = 1.0
 
