@@ -73,8 +73,8 @@ C_params = [10**x for x in np.linspace(1,5, 50)]           #Logrithmic svaling o
 gamma_params = [10**x for x in np.linspace(-4,0, 50)]
 
 ####    Grid Search    ####
-for dim in range(5,15):
-
+for dim in range(1,15):
+    
     #PCA dim reduction
     reducer = PCA(n_components=dim)
     X_trn_pca = reducer.fit_transform(X_trn)
@@ -99,7 +99,7 @@ for dim in range(5,15):
     f.close()
 
     dump(clf,sys.path[0] +"/GridSearchResult/"+f'{dim}_14Grid.joblib')
-
+    
 
     ## Print result
     clf_load = load(sys.path[0] +"/GridSearchResult/"+f'{dim}_14Grid.joblib')
