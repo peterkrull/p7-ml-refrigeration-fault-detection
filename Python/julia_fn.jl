@@ -5,9 +5,9 @@ function ScalarFit(X)
     N,f = size(X)
 
     means = [mean(X[:,i]) for i in 1:f]
-    variances = [var(X[:,i]) for i in 1:f]
+    stds = [std(X[:,i]) for i in 1:f]
 
-    return means,variances
+    return means,stds
 end
 
 function ScalarUse(X,m,s)
@@ -20,6 +20,11 @@ function ScalarUse(X,m,s)
     end
     return X_out
 end
+
+function ScalarUse(X::DataFrame,m,s)
+    return DataFrame(ScalarUse(Matrix(X),m,s),names(X))
+end
+
 
 function ICD(X) :: Vector{Float64}
     X :: Matrix{Float64} = Matrix(X)
