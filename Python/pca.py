@@ -5,7 +5,7 @@ import matplotlib.pyplot as plt
 # Transform entire data frame
 class PCA_reducer:
 
-    def __init__(self, data : pd.DataFrame, dims : int, target_id : str = None, scree_plot : bool = False) -> None:
+    def __init__(self, data : pd.DataFrame, dims : int, target_id : str = None, scree_plot : bool = False, saveName : str = None) -> None:
 
         # Extract labels and drop
         if target_id:
@@ -36,10 +36,12 @@ class PCA_reducer:
             eig_val[::-1].sort()
             eig_total = eig_val.sum()
             plt.figure(figsize=(6,4))
-            plt.bar([x for x in range(1,len(eig_vec)+1)], np.real(eig_val[0:len(eig_vec/eig_total)]))
+            plt.bar([x for x in range(1,len(eig_vec)+1)], np.real(eig_val[0:len(eig_vec)]/eig_total))
             plt.xticks([x for x in range(1, len(eig_vec)+1)])
             plt.xlabel("Eigenvalue")
             plt.ylabel("Propotion of total eigenvalue")
+            if(saveName!=None):
+                plt.savefig(saveName)
 
     def transform(self, data : pd.DataFrame, target_id : str = None):
 
