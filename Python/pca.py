@@ -34,11 +34,12 @@ class PCA_reducer:
 
         if scree_plot:
             eig_val[::-1].sort()
+            eig_total = eig_val.sum()
             plt.figure(figsize=(6,4))
-            plt.bar([x for x in range(1,len(eig_vec)+1)], np.real(eig_val[0:len(eig_vec)]))
+            plt.bar([x for x in range(1,len(eig_vec)+1)], np.real(eig_val[0:len(eig_vec/eig_total)]))
             plt.xticks([x for x in range(1, len(eig_vec)+1)])
             plt.xlabel("Eigenvalue")
-            plt.ylabel("Magnitude")
+            plt.ylabel("Propotion of total eigenvalue")
 
     def transform(self, data : pd.DataFrame, target_id : str = None):
 
