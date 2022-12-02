@@ -42,7 +42,7 @@ y_vld=vld_data['target']
 y_tst=tst_data['target']
 
 
-pcaRed =  pca.PCA_reducer(pd.DataFrame(X_trn),3, scree_plot=True,saveName="ScreePlotSVM.pdf")       #Preserve 91% of eigenvalues
+pcaRed =  pca.PCA_reducer(pd.DataFrame(X_trn),3, scree_plot=True)       #Preserve 91% of eigenvalues
 X_trn_red = pcaRed.transform(pd.DataFrame(X_trn))
 X_vld_red = pcaRed.transform(pd.DataFrame(X_vld))
 X_tst_red = pcaRed.transform(pd.DataFrame(X_tst))
