@@ -1,11 +1,20 @@
-2022-12-02 12:52:28.216312
+2022-12-02 13:30:59.815627
 
 Features kept: Index(['T0'], dtype='object')
+Features droppedt: Index(['Pdis', 'Psuc', 'Tc', 'Tdis', 'Tret', 'Tsuc', 'Tsh', 'Tsup', 'CondFan',
+       'CprPower', 'Density', 'Tamb', 'Tset'],
+      dtype='object')
 Score: 0.10873015873015873
 
 Features kept: Index(['T0', 'Tc'], dtype='object')
+Features droppedt: Index(['Pdis', 'Psuc', 'Tdis', 'Tret', 'Tsuc', 'Tsh', 'Tsup', 'CondFan',
+       'CprPower', 'Density', 'Tamb', 'Tset'],
+      dtype='object')
 Score: 0.15555555555555556
 
 Features kept: Index(['T0', 'Tc', 'Tset'], dtype='object')
+Features droppedt: Index(['Pdis', 'Psuc', 'Tdis', 'Tret', 'Tsuc', 'Tsh', 'Tsup', 'CondFan',
+       'CprPower', 'Density', 'Tamb'],
+      dtype='object')
 Score: 0.4884920634920635
 
