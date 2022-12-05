@@ -51,7 +51,7 @@ if(Grid_search==True):
     clf = RandomizedSearchCV(svc,{'C':C_params,'gamma':gamma_params},n_jobs=-1,verbose =3,n_iter=1)
     clf.fit(X_trn,y_trn)
 
-    f = open(sys.path[0] +  "SVM_GridsearchResul.txt", 'w')
+    f = open(sys.path[0] +  "SVM_GridsearchResult.txt", 'w')
     f.write(str(datetime.now()) + "\n\n")
     f.write(str(clf.cv_results_))
     f.write('\n')
@@ -69,6 +69,10 @@ if(Print_figs==True):
     print("Saving figures")
     import confusion_matrix2 as confusionMatrix
     clf_load = load(sys.path[0] +'SVM.joblib')
+
+    gridSearchLog = pd.read_json(sys.path[0] +"/SVM_GridSearchLog.json")
+    plot_gridsearch_log(gridSearchLog,save_figure='SVM-GridResult.pdf')
+    print('Score plot saved')
 
     y_trn_predict = clf_load.predict(X_trn)
     confusionMatrix.confusion_matrix(y_trn,y_trn_predict,save_fig_name="SVM_trn.pdf",eval_labels = False,title='SVM training')
