@@ -11,10 +11,10 @@ import lda
 from datetime import datetime
 from joblib import dump, load
 
-plt.rcParams.update({
-    "text.usetex": True,
-    "font.family": "cmr"
-})
+#plt.rcParams.update({
+#    "text.usetex": True,
+#    "font.family": "cmr"
+#})
 
 #Load data
 trn_data = pd.read_csv(sys.path[0] + "/../../../TrainingData/neodata/soltani_14d_nonoise_1200.csv")
