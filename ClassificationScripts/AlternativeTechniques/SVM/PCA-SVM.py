@@ -30,7 +30,7 @@ tst_data = pd.read_csv(sys.path[0] + "/../../../TestData/neodata/14d_setpoints_1
 
 
 feature_names = trn_data.drop(['target','setpoint'],axis=1).columns.values
-feature_drop =['Pdis','Psuc','T0''Tsh','CondFan','CprPower','Tamb','Tset','target','setpoint']
+feature_drop =['Pdis','Psuc','T0','Tsh','CondFan','CprPower','Tamb','Tset','target','setpoint']
 
 scale = StandardScaler()
 X_trn = scale.fit_transform(trn_data.drop(feature_drop,axis=1))
