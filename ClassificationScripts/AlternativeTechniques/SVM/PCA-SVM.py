@@ -10,27 +10,29 @@ from sklearn import svm
 from sklearn.model_selection import GridSearchCV
 from datetime import datetime
 
+'''
 import matplotlib.pyplot as plt
 plt.rcParams.update({
     "text.usetex": True,
     "font.family": "cmr"
 })
+'''
 
 from joblib import dump, load
 
 
-Print_figs=False
+Print_figs=True
 Grid_search=True
 
 
 # Load and standard scaling
-trn_data = pd.read_csv(sys.path[0] + "/../../../TrainingData/neodata/14d_setpoints_1200.csv")
-vld_data = pd.read_csv(sys.path[0] + "/../../../ValidationData/neodata/14d_setpoints_1200.csv")
-tst_data = pd.read_csv(sys.path[0] + "/../../../TestData/neodata/14d_setpoints_100.csv")
+trn_data = pd.read_csv(sys.path[0] + "/../../../TrainingData/neodata/soltani_14d_nonoise_1200.csv")
+vld_data = pd.read_csv(sys.path[0] + "/../../../ValidationData/neodata/soltani_14d_nonoise_1200.csv")
+tst_data = pd.read_csv(sys.path[0] + "/../../../TestData/neodata/soltani_14d_nonoise_100.csv")
 
 
 feature_names = trn_data.drop(['target','setpoint'],axis=1).columns.values
-feature_drop =['Pdis','Psuc','T0','Tsh','CondFan','CprPower','Tamb','Tset','target','setpoint']
+feature_drop =['Pdis','Psuc','T0','Tsh','CondFan','CprPower','Tamb','Tset','target']
 
 scale = StandardScaler()
 X_trn = scale.fit_transform(trn_data.drop(feature_drop,axis=1))
@@ -78,7 +80,7 @@ if(Print_figs==True):
     clf_load = load(sys.path[0] +"/PCA-SVM.joblib")
 
     gridSearchLog = pd.read_json(sys.path[0] +"/PCA-SVM_GridSearchLog.json")
-    plot_gridsearch_log(gridSearchLog,save_figure='PCA-SVM-GridResult.pdf')
+    plot_gridsearch_log(gridSearchLog,plot_max=True,save_figure='PCA-SVM-GridResult.pdf')
     print('Score plot saved')
     
 
