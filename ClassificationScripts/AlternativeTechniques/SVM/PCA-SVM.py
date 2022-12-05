@@ -53,7 +53,7 @@ if(Grid_search==True):
     C_params = [10**x for x in np.linspace(1,5, 100)]           #Logrithmic svaling of parameters
     gamma_params = [10**x for x in np.linspace(-4,0, 100)]
 
-    clf = RandomizedSearchCV(svc,{'C':C_params,'gamma':gamma_params},n_jobs=-1,verbose =3,n_iter=5)
+    clf = RandomizedSearchCV(svc,{'C':C_params,'gamma':gamma_params},n_jobs=-1,verbose =3,n_iter=1000)
     clf.fit(X_trn_red,y_trn)
 
     f = open(sys.path[0] +  "PCA-SVM_GridsearchResul.txt", 'w')
