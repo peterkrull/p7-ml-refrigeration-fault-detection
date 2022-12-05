@@ -20,7 +20,7 @@ plt.rcParams.update({
 from joblib import dump, load
 
 
-Print_figs=False
+Print_figs=True
 Grid_search=True
 
 
@@ -30,8 +30,8 @@ vld_data = pd.read_csv(sys.path[0] + "/../../../ValidationData/neodata/soltani_1
 tst_data = pd.read_csv(sys.path[0] + "/../../../TestData/neodata/soltani_14d_nonoise_100.csv")
 
 
-feature_names = trn_data.drop(['target','setpoint'],axis=1).columns.values
-feature_drop =['Pdis','Psuc','T0','Tsh','CondFan','CprPower','Tamb','Tset','target','setpoint']
+feature_names = trn_data.drop(['target'],axis=1).columns.values
+feature_drop =['Pdis','Psuc','T0','Tsh','CondFan','CprPower','Tamb','Tset','target']
 print(trn_data.drop(feature_drop,axis=1))
 
 
@@ -47,7 +47,7 @@ y_tst=tst_data['target']
 ##Grid search
 if(Grid_search==True):
     svc = svm.SVC(kernel='rbf',decision_function_shape='ovo')
-    C_params = [10**x for x in np.linspace(2,4,21)]           #Logrithmic svaling of parameters
+    C_params = [10**x for x in np.linspace(2,5,42)]           #Logrithmic svaling of parameters
     gamma_params = [10**x for x in np.linspace(-3,-1,21)]
 
     clf = GridSearchCV(svc,{'C':C_params,'gamma':gamma_params},n_jobs=-1,verbose =3)
