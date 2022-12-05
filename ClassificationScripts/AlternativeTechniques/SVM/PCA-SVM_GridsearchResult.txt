@@ -1,0 +1,10 @@
+2022-12-05 09:50:14.984642
+
+{'mean_fit_time': array([36.14688649, 17.16498628, 44.81322985, 55.68198757]), 'std_fit_time': array([ 1.00307127,  1.27337473,  2.39394716, 11.14933064]), 'mean_score_time': array([24.84364228, 19.09386888, 29.65312099, 11.73239546]), 'std_score_time': array([0.59435786, 0.98044737, 2.98952304, 4.70375206]), 'param_C': masked_array(data=[100.0, 100.0, 10000.0, 10000.0],
+             mask=[False, False, False, False],
+       fill_value='?',
+            dtype=object), 'param_gamma': masked_array(data=[0.001, 0.1, 0.001, 0.1],
+             mask=[False, False, False, False],
+       fill_value='?',
+            dtype=object), 'params': [{'C': 100.0, 'gamma': 0.001}, {'C': 100.0, 'gamma': 0.1}, {'C': 10000.0, 'gamma': 0.001}, {'C': 10000.0, 'gamma': 0.1}], 'split0_test_score': array([0.25515873, 0.55674603, 0.36269841, 0.63472222]), 'split1_test_score': array([0.2531746 , 0.59543651, 0.3672619 , 0.66488095]), 'split2_test_score': array([0.25535714, 0.57202381, 0.37043651, 0.64742063]), 'split3_test_score': array([0.25535714, 0.57202381, 0.37440476, 0.64345238]), 'split4_test_score': array([0.25952381, 0.58035714, 0.37876984, 0.65436508]), 'mean_test_score': array([0.25571429, 0.57531746, 0.37071429, 0.64896825]), 'std_test_score': array([0.00207491, 0.01262354, 0.00556349, 0.01017948]), 'rank_test_score': array([4, 2, 3, 1])}
+SVC(C=10000.0, decision_function_shape='ovo', gamma=0.1)

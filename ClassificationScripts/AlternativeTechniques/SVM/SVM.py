@@ -82,4 +82,4 @@ if(Print_figs==True):
     confusionMatrix.confusion_matrix(y_tst,y_tst_predict,save_fig_name="SVM_tst.pdf", eval_labels = False,title='SVM test')
     print("Test figure saved")
 
-    plt.close()
+    #plt.close()

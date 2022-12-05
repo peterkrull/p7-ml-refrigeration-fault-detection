@@ -7,7 +7,7 @@ import pca
 
 from sklearn.preprocessing import StandardScaler
 from sklearn import svm
-from sklearn.model_selection import RandomizedSearchCV
+from sklearn.model_selection import GridSearchCV
 from datetime import datetime
 
 import matplotlib.pyplot as plt
@@ -20,7 +20,7 @@ from joblib import dump, load
 
 
 Print_figs=True
-Grid_search=False
+Grid_search=True
 
 
 # Load and standard scaling
@@ -50,13 +50,13 @@ X_tst_red = pcaRed.transform(pd.DataFrame(X_tst))
 ##Grid search
 if(Grid_search==True):
     svc = svm.SVC(kernel='rbf',decision_function_shape='ovo')
-    C_params = [10**x for x in np.linspace(1,5, 100)]           #Logrithmic svaling of parameters
-    gamma_params = [10**x for x in np.linspace(-4,0, 100)]
+    C_params = [10**x for x in np.linspace(2,4,2)]           #Logrithmic svaling of parameters
+    gamma_params = [10**x for x in np.linspace(-3,-1, 2)]
 
-    clf = RandomizedSearchCV(svc,{'C':C_params,'gamma':gamma_params},n_jobs=-1,verbose =3,n_iter=1000)
+    clf = GridSearchCV(svc,{'C':C_params,'gamma':gamma_params},n_jobs=-1,verbose =3)
     clf.fit(X_trn_red,y_trn)
 
-    f = open(sys.path[0] +  "PCA-SVM_GridsearchResul.txt", 'w')
+    f = open(sys.path[0] +  "/PCA-SVM_GridsearchResult.txt", 'w')
     f.write(str(datetime.now()) + "\n\n")
     f.write(str(clf.cv_results_))
     f.write('\n')
@@ -64,16 +64,23 @@ if(Grid_search==True):
     f.close()
 
     cv_log = pd.DataFrame.from_dict(clf.cv_results_)
-    f = open(sys.path[0] +"PCA-SVM_GridSearchLog.json", 'w')
+    f = open(sys.path[0] +"/PCA-SVM_GridSearchLog.json", 'w')
     f.write(cv_log.to_json())
     f.close()
 
-    dump(clf,'PCA-SVM.joblib')
+    dump(clf,sys.path[0] +'/PCA-SVM.joblib')
 
 if(Print_figs==True):
     print("Saving figures")
     import confusion_matrix2 as confusionMatrix
-    clf_load = load(sys.path[0] +"PCA-SVM.joblib")
+    from gridSearch_scoreplot import plot_gridsearch_log
+
+    clf_load = load(sys.path[0] +"/PCA-SVM.joblib")
+
+    gridSearchLog = pd.read_json(sys.path[0] +"/PCA-SVM_GridSearchLog.json")
+    plot_gridsearch_log(gridSearchLog,save_figure='PCA-SVM-GridResult.pdf')
+    print('Score plot saved')
+    
 
     y_trn_predict = clf_load.predict(X_trn_red)
     confusionMatrix.confusion_matrix(y_trn,y_trn_predict,save_fig_name="PCA-SVM_trn.pdf",eval_labels = False,title='PCA-SVM training')
