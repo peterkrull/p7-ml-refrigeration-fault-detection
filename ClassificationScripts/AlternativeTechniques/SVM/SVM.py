@@ -20,7 +20,7 @@ plt.rcParams.update({
 from joblib import dump, load
 
 
-Print_figs=False
+Print_figs=True
 Grid_search=True
 
 
@@ -31,7 +31,7 @@ tst_data = pd.read_csv(sys.path[0] + "/../../../TestData/neodata/soltani_14d_non
 
 
 feature_names = trn_data.drop(['target','setpoint'],axis=1).columns.values
-feature_drop =['Pdis','Psuc','T0','Tsh','CondFan','CprPower','Tamb','Tset','target','setpoint']
+feature_drop =['Pdis','Psuc','T0','Tsh','CondFan','CprPower','Tamb','Tset','target']
 print(trn_data.drop(feature_drop,axis=1))
 
 
