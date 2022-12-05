@@ -19,8 +19,8 @@ plt.rcParams.update({
 from joblib import dump, load
 
 
-Print_figs=False
-Grid_search=True
+Print_figs=True
+Grid_search=False
 
 
 # Load and standard scaling
@@ -78,7 +78,7 @@ if(Print_figs==True):
     clf_load = load(sys.path[0] +"/PCA-SVM.joblib")
 
     gridSearchLog = pd.read_json(sys.path[0] +"/PCA-SVM_GridSearchLog.json")
-    plot_gridsearch_log(gridSearchLog,save_figure='PCA-SVM-GridResult.pdf')
+    plot_gridsearch_log(gridSearchLog,plot_max=True,save_figure='PCA-SVM-GridResult.pdf')
     print('Score plot saved')
     
 

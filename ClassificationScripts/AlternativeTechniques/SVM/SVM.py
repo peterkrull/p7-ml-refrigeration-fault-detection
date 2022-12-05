@@ -25,13 +25,15 @@ Grid_search=True
 
 
 # Load and standard scaling
-trn_data = pd.read_csv(sys.path[0] + "/../../../TrainingData/neodata/14d_setpoints_1200.csv")
-vld_data = pd.read_csv(sys.path[0] + "/../../../ValidationData/neodata/14d_setpoints_1200.csv")
-tst_data = pd.read_csv(sys.path[0] + "/../../../TestData/neodata/14d_setpoints_100.csv")
+trn_data = pd.read_csv(sys.path[0] + "/../../../TrainingData/neodata/soltani_14d_nonoise_1200.csv")
+vld_data = pd.read_csv(sys.path[0] + "/../../../ValidationData/neodata/soltani_14d_nonoise_1200.csv")
+tst_data = pd.read_csv(sys.path[0] + "/../../../TestData/neodata/soltani_14d_nonoise_100.csv")
 
 
 feature_names = trn_data.drop(['target','setpoint'],axis=1).columns.values
 feature_drop =['Pdis','Psuc','T0','Tsh','CondFan','CprPower','Tamb','Tset','target','setpoint']
+print(trn_data.drop(feature_drop,axis=1))
+
 
 scale = StandardScaler()
 X_trn = scale.fit_transform(trn_data.drop(feature_drop,axis=1))
@@ -68,10 +70,11 @@ if(Grid_search==True):
 if(Print_figs==True):
     print("Saving figures")
     import confusion_matrix2 as confusionMatrix
+    from gridSearch_scoreplot import plot_gridsearch_log
     clf_load = load(sys.path[0] +'/SVM.joblib')
 
     gridSearchLog = pd.read_json(sys.path[0] +"/SVM_GridSearchLog.json")
-    plot_gridsearch_log(gridSearchLog,save_figure='SVM-GridResult.pdf')
+    plot_gridsearch_log(gridSearchLog,plot_max=True,save_figure='SVM-GridResult.pdf')
     print('Score plot saved')
 
     y_trn_predict = clf_load.predict(X_trn)
