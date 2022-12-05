@@ -1,5 +1,23 @@
 import pandas as pd
 
+class scaler:
+    
+    def __init__(self, X) -> None:
+
+        self.mean = X.mean()
+        self.std = X.std()
+        
+    def transform(self, X):
+
+        X2 = X.copy()
+        for i in X2:
+            if self.std[i] != 0:
+                X2[i] = (X2[i]-self.mean[i])/self.std[i]
+            else:
+                X2[i] = X2[i]-self.mean[i]
+
+        return X2        
+
 class standardization:
     
     def __init__(self, data : pd.DataFrame, target = None) -> None:

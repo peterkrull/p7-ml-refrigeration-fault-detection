@@ -1,5 +1,6 @@
 import matplotlib.pyplot as plt
 import pandas as pd
+import scipy as sp
 import numpy as np
 
 # Reduce dimensionality using Fisher's LDA
@@ -29,11 +30,11 @@ class reducer:
             self.Sw += np.dot(inner.T,inner)
 
         # Calculate omega
-        self.omega = np.dot( np.linalg.pinv( self.Sw ), self.Sb)
+        self.omega = np.linalg.solve( self.Sw , self.Sb )
 
         # Get eigen vectors
-        self.eig_val , self.eig_vec = np.linalg.eig(self.omega)
-        
+        self.eig_val , self.eig_vec = np.linalg.eig( self.omega )
+
         # Ensure eigen values are sorted
         idx = np.flip(np.argsort(np.abs(self.eig_val)))
         self.eig_val = self.eig_val[idx]
@@ -70,7 +71,7 @@ class reducer:
 class classifier:
 
     # Initialize the LDA by using a dataset
-    def __init__(self, X : 'pd.ndarray', y : 'pd.ndarray', p: 'pd.ndarray' = None) -> None:
+    def __init__(self, X : 'pd.ndarray' = None, y : 'pd.ndarray' = None) -> None:
 
         """Linear Discriminant Classification constructor
 
@@ -79,6 +80,10 @@ class classifier:
 
         """
 
+        if X and y:
+            self.fit(X,y)
+
+    def fit(self, X : 'pd.ndarray' = None, y : 'pd.ndarray' = None, p: 'pd.ndarray' = None,**kwargs):
         # Enforce data types
         X = np.array(X)
         y = np.ravel(y)
@@ -98,6 +103,11 @@ class classifier:
             muk = data_k.mean()  
             inner = data_k - muk      
             self.Sw += np.dot(inner.T,inner)
+
+    def get_params(self,deep : bool = False) : return {'priors': None, 'reg_param': 0.0, 'store_covariance': False, 'tol': 0.0001}
+
+    def score(self,X,y):
+        return sum(y == self.predict(X))/len(y)
 
     def predict(self,X):
 
