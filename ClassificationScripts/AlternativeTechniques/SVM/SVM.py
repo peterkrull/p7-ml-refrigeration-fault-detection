@@ -21,7 +21,7 @@ from joblib import dump, load
 
 
 Print_figs=True
-Grid_search=True
+Grid_search=False
 
 
 # Load and standard scaling
