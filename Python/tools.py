@@ -90,12 +90,12 @@ def feature_selection(clf,trn : dataloader ,vld : dataloader):
             bw = SequentialFeatureSelector(clf, direction=direction, n_jobs=-1, n_features_to_select=n_features)
             bw.fit(trn.X, trn.y)
 
-            features = trn.X.columns[bw.get_support()]
+            features = np.array(trn.X.columns[bw.get_support()])
 
             score_clf = clf
-            score_clf.fit(trn.get(features.tolist()).X,trn.y)
+            score_clf.fit(trn.get(features).X,trn.y)
 
-            score = score_clf.score(vld.get(features.tolist()).X,vld.y)
+            score = score_clf.score(vld.get(features).X,vld.y)
             summary = pd.concat([summary, pd.DataFrame({'n_features':n_features,'score':score,'features': features, 'direction': direction})], )
     
     return summary
