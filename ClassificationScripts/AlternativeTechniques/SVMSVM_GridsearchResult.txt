@@ -1,0 +1,10 @@
+2022-12-05 11:16:36.821695
+
+{'mean_fit_time': array([14.56281524]), 'std_fit_time': array([0.1180813]), 'mean_score_time': array([13.22450967]), 'std_score_time': array([0.1915979]), 'param_C': masked_array(data=[100.0],
+             mask=[False],
+       fill_value='?',
+            dtype=object), 'param_gamma': masked_array(data=[0.001],
+             mask=[False],
+       fill_value='?',
+            dtype=object), 'params': [{'C': 100.0, 'gamma': 0.001}], 'split0_test_score': array([0.56488095]), 'split1_test_score': array([0.56746032]), 'split2_test_score': array([0.57718254]), 'split3_test_score': array([0.57460317]), 'split4_test_score': array([0.56646825]), 'mean_test_score': array([0.57011905]), 'std_test_score': array([0.00485459]), 'rank_test_score': array([1])}
+SVC(C=100.0, decision_function_shape='ovo', gamma=0.001)

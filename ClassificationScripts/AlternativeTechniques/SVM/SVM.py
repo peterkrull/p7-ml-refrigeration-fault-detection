@@ -6,7 +6,7 @@ sys.path.append(sys.path[0] + "/../../../Python")
 
 from sklearn.preprocessing import StandardScaler
 from sklearn import svm
-from sklearn.model_selection import RandomizedSearchCV
+from sklearn.model_selection import GridSearchCV
 from datetime import datetime
 
 '''
@@ -20,7 +20,7 @@ plt.rcParams.update({
 from joblib import dump, load
 
 
-Print_figs=True
+Print_figs=False
 Grid_search=True
 
 
@@ -46,12 +46,12 @@ y_tst=tst_data['target']
 if(Grid_search==True):
     svc = svm.SVC(kernel='rbf',decision_function_shape='ovo')
     C_params = [10**x for x in np.linspace(2,4,21)]           #Logrithmic svaling of parameters
-    gamma_params = [10**x for x in np.linspace(-3,-1, 21)]
+    gamma_params = [10**x for x in np.linspace(-3,-1,21)]
 
-    clf = RandomizedSearchCV(svc,{'C':C_params,'gamma':gamma_params},n_jobs=-1,verbose =3,n_iter=1)
+    clf = GridSearchCV(svc,{'C':C_params,'gamma':gamma_params},n_jobs=-1,verbose =3)
     clf.fit(X_trn,y_trn)
 
-    f = open(sys.path[0] +  "SVM_GridsearchResult.txt", 'w')
+    f = open(sys.path[0] +  "/SVM_GridsearchResult.txt", 'w')
     f.write(str(datetime.now()) + "\n\n")
     f.write(str(clf.cv_results_))
     f.write('\n')
@@ -59,16 +59,16 @@ if(Grid_search==True):
     f.close()
 
     cv_log = pd.DataFrame.from_dict(clf.cv_results_)
-    f = open(sys.path[0] +"SVM_GridSearchLog.json", 'w')
+    f = open(sys.path[0] +"/SVM_GridSearchLog.json", 'w')
     f.write(cv_log.to_json())
     f.close()
 
-    dump(clf,sys.path[0]+'SVM.joblib')
+    dump(clf,sys.path[0]+'/SVM.joblib')
 
 if(Print_figs==True):
     print("Saving figures")
     import confusion_matrix2 as confusionMatrix
-    clf_load = load(sys.path[0] +'SVM.joblib')
+    clf_load = load(sys.path[0] +'/SVM.joblib')
 
     gridSearchLog = pd.read_json(sys.path[0] +"/SVM_GridSearchLog.json")
     plot_gridsearch_log(gridSearchLog,save_figure='SVM-GridResult.pdf')
