@@ -55,7 +55,7 @@ if(Grid_search==True):
     gamma_params = [10**x for x in np.linspace(-3,-1,21)]
 
     clf = GridSearchCV(svc,{'C':C_params,'gamma':gamma_params},n_jobs=-1,verbose =3,cv=GroupKFold(n_splits=5))
-    clf.fit(X_trn,y_trn,g_trn)
+    clf.fit(X_trn,y_trn,groups=g_trn)
 
     f = open(sys.path[0] +  "/SVM_GridsearchResult.txt", 'w')
     f.write(str(datetime.now()) + "\n\n")
