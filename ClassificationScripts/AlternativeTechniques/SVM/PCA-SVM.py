@@ -20,7 +20,7 @@ from joblib import dump, load
 
 
 Print_figs=True
-Grid_search=True
+Grid_search=False
 
 
 # Load and standard scaling
@@ -50,8 +50,8 @@ X_tst_red = pcaRed.transform(pd.DataFrame(X_tst))
 ##Grid search
 if(Grid_search==True):
     svc = svm.SVC(kernel='rbf',decision_function_shape='ovo')
-    C_params = [10**x for x in np.linspace(2,4,2)]           #Logrithmic svaling of parameters
-    gamma_params = [10**x for x in np.linspace(-3,-1, 2)]
+    C_params = [10**x for x in np.linspace(2,4,21)]           #Logrithmic svaling of parameters
+    gamma_params = [10**x for x in np.linspace(-3,-1, 21)]
 
     clf = GridSearchCV(svc,{'C':C_params,'gamma':gamma_params},n_jobs=-1,verbose =3)
     clf.fit(X_trn_red,y_trn)
