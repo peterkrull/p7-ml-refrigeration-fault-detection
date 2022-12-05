@@ -25,9 +25,9 @@ Grid_search=True
 
 
 # Load and standard scaling
-trn_data = pd.read_csv(sys.path[0] + "/../../../../TrainingData/neodata/soltani_14d_nonoise_1200.csv")
-vld_data = pd.read_csv(sys.path[0] + "/../../../../ValidationData/neodata/soltani_14d_nonoise_1200.csv")
-tst_data = pd.read_csv(sys.path[0] + "/../../../../TestData/neodata/soltani_14d_nonoise_100.csv")
+trn_data = pd.read_csv(sys.path[0] + "/../../../../TrainingData/neodata/14d_setpoints_1200.csv")
+vld_data = pd.read_csv(sys.path[0] + "/../../../../ValidationData/neodata/14d_setpoints_1200.csv")
+tst_data = pd.read_csv(sys.path[0] + "/../../../../TestData/neodata/14d_setpoints_100.csv")
 
 
 feature_names = trn_data.drop(['target'],axis=1).columns.values
