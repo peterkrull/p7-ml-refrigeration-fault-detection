@@ -30,7 +30,7 @@ vld_data = pd.read_csv(sys.path[0] + "/../../../ValidationData/neodata/soltani_1
 tst_data = pd.read_csv(sys.path[0] + "/../../../TestData/neodata/soltani_14d_nonoise_100.csv")
 
 
-feature_names = trn_data.drop(['target','setpoint'],axis=1).columns.values
+feature_names = trn_data.drop(['target'],axis=1).columns.values
 feature_drop =['Pdis','Psuc','T0','Tsh','CondFan','CprPower','Tamb','Tset','target']
 print(trn_data.drop(feature_drop,axis=1))
 
