@@ -31,7 +31,7 @@ tst_data = pd.read_csv(sys.path[0] + "/../../../TestData/neodata/14d_setpoints_1
 
 
 feature_names = trn_data.drop(['target','setpoint'],axis=1).columns.values
-feature_drop =['Pdis','Psuc','Tsup','Tsuc','Tsup','CondFan','CprPower','Density','Tamb','target','setpoint']
+feature_drop =['Pdis','Psuc','T0','Tsh','CondFan','CprPower','Tamb','Tset','target','setpoint']
 
 scale = StandardScaler()
 X_trn = scale.fit_transform(trn_data.drop(feature_drop,axis=1))
@@ -45,8 +45,8 @@ y_tst=tst_data['target']
 ##Grid search
 if(Grid_search==True):
     svc = svm.SVC(kernel='rbf',decision_function_shape='ovo')
-    C_params = [10**x for x in np.linspace(1,5, 100)]           #Logrithmic svaling of parameters
-    gamma_params = [10**x for x in np.linspace(-4,0, 100)]
+    C_params = [10**x for x in np.linspace(2,4,21)]           #Logrithmic svaling of parameters
+    gamma_params = [10**x for x in np.linspace(-3,-1, 21)]
 
     clf = RandomizedSearchCV(svc,{'C':C_params,'gamma':gamma_params},n_jobs=-1,verbose =3,n_iter=1)
     clf.fit(X_trn,y_trn)
