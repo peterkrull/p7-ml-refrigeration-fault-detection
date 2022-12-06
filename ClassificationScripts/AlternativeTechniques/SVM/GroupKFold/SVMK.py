@@ -21,7 +21,7 @@ from joblib import dump, load
 
 
 Print_figs=True
-Grid_search=True
+Grid_search=False
 
 
 # Load and standard scaling
@@ -51,7 +51,7 @@ y_tst=tst_data['target']
 ##Grid search
 if(Grid_search==True):
     svc = svm.SVC(kernel='rbf',decision_function_shape='ovo')
-    C_params = [10**x for x in np.linspace(2,5,42)]           #Logrithmic svaling of parameters
+    C_params = [10**x for x in np.linspace(2,6,63)]           #Logrithmic svaling of parameters
     gamma_params = [10**x for x in np.linspace(-3,-1,21)]
 
     clf = GridSearchCV(svc,{'C':C_params,'gamma':gamma_params},n_jobs=-1,verbose =3,cv=GroupKFold(n_splits=5))

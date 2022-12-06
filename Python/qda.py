@@ -4,7 +4,7 @@ import numpy as np
 class classifier:
 
     # Initialize the QDA by using a dataset
-    def __init__(self, X : 'pd.ndarray', y : 'pd.ndarray', p: 'pd.ndarray' = None) -> None:
+    def __init__(self, X : 'pd.ndarray' = None, y : 'pd.ndarray' = None,**kwargs) -> None:
 
         """Linear Discriminant Classification constructor
 
@@ -13,6 +13,10 @@ class classifier:
 
         """
 
+        if X and y:
+            self.fit(X,y)
+
+    def fit(self, X : 'pd.ndarray' = None, y : 'pd.ndarray' = None, p: 'pd.ndarray' = None):
         # Enforce data types
         X = np.array(X)
         y = np.ravel(y)
@@ -33,6 +37,11 @@ class classifier:
             inner = data_k - muk      
             self.Sw += np.dot(inner.T,inner)
 
+    def get_params(self,deep : bool = False) : return {'priors': None, 'reg_param': 0.0, 'store_covariance': False, 'tol': 0.0001}
+
+    def score(self,X,y):
+        return sum(y == self.predict(X))/len(y)
+
     def predict(self,X):
 
             X = np.array(X)
@@ -40,5 +49,5 @@ class classifier:
 
 def qda_discriminant_function(X,s,m,p):
     part1 = -0.5*np.log(np.linalg.det(s))
-    part2 = -0.5*np.einsum("ji,ij->j",(X-m),np.dot(np.linalg.inv(s),(X-m).T))
+    part2 = -0.5*np.einsum("ji,ij->j",(X-m),np.dot(np.linalg.pinv(s),(X-m).T))
     return part1 + part2 + np.log(p) 
