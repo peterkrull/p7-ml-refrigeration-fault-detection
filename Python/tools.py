@@ -20,12 +20,14 @@ class dataloader:
 
         else: raise(TypeError(f"Must pass path or DataFrame, got : {type(path)}"))
 
-    def sample(self,**kwargs):
+    def sample(self,even = False,**kwargs):
         
         """Sample the data collection either as a fraction, eg. `frac = 0.2` or as a specific number, eg. `n = 100`."""
         
-        
-        data = pd.concat([self.X,self.y],axis='columns').sample(**kwargs)
+        if even:
+            data = pd.concat([self.X,self.y],axis='columns').iloc[::even,:]
+        else:
+            data = pd.concat([self.X,self.y],axis='columns').sample(**kwargs)
         y = data.pop('target')
         X = data
         return dataloader(X,y)
