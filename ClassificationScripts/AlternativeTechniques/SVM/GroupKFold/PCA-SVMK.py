@@ -10,18 +10,18 @@ from sklearn import svm
 from sklearn.model_selection import GridSearchCV, GroupKFold
 from datetime import datetime
 
-'''
+
 import matplotlib.pyplot as plt
 plt.rcParams.update({
     "text.usetex": True,
     "font.family": "cmr"
 })
-'''
+
 from joblib import dump, load
 
 
-Print_figs=True
-Grid_search=True
+Print_figs=False
+Grid_search=False
 
 
 # Load and standard scaling
@@ -47,7 +47,7 @@ y_vld=vld_data['target']
 y_tst=tst_data['target']
 
 
-pcaRed =  pca.PCA_reducer(pd.DataFrame(X_trn),3, scree_plot=True)       #Preserve 91% of eigenvalues
+pcaRed =  pca.PCA_reducer(pd.DataFrame(X_trn),3, scree_plot=True,save_name="ScreePlotGK.pdf")       #Preserve 91% of eigenvalues
 X_trn_red = pcaRed.transform(pd.DataFrame(X_trn))
 X_vld_red = pcaRed.transform(pd.DataFrame(X_vld))
 X_tst_red = pcaRed.transform(pd.DataFrame(X_tst))
