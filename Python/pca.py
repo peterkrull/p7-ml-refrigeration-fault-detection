@@ -5,7 +5,7 @@ import matplotlib.pyplot as plt
 # Transform entire data frame
 class PCA_reducer:
 
-    def __init__(self, data : pd.DataFrame, dims : int, target_id : str = None, scree_plot : bool = False,save_name :str ="Scree_plot.pdf") -> None:
+    def __init__(self, data : pd.DataFrame, dims : int, target_id : str = None, scree_plot : bool = False,save_name :str ="Scree_plot.pdf",fig_size =(2,3)) -> None:
 
         # Extract labels and drop
         if target_id:
@@ -35,7 +35,7 @@ class PCA_reducer:
         if scree_plot:
             eig_val[::-1].sort()
             eig_total = eig_val.sum()
-            plt.figure(figsize=(5,3))
+            plt.figure(figsize=fig_size)
             plt.bar([x for x in range(1,len(eig_vec)+1)], np.real(eig_val[0:len(eig_vec)])/eig_total)
             plt.xticks([x for x in range(1, len(eig_vec)+1)])
             plt.xlabel("Eigenvalue")
