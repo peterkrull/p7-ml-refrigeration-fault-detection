@@ -2,6 +2,7 @@ import matplotlib.pyplot as plt
 import pandas as pd
 import numpy as np
 from matplotlib import rc
+import matplotlib
 
 def plot_gridsearch_log(grid_search_log : pd.DataFrame, show_figure : bool = False, save_figure : str = None, x_label : str = 'param_C', y_label : str = 'param_gamma', score_label : str = 'mean_test_score', plot_max : bool = False,fig_size=(4,4)):
     """ function for plotting contour plot of grid search log
@@ -28,16 +29,25 @@ def plot_gridsearch_log(grid_search_log : pd.DataFrame, show_figure : bool = Fal
 
     plt.xscale('log')
     plt.yscale('log')
+    
+    # locmaj = matplotlib.ticker.LogLocator(base=10,numticks=12) 
+    # plt.axes().xaxis.set_major_locator(locmaj)
+    # locmin = matplotlib.ticker.LogLocator(base=10.0,subs=(0.2,0.4,0.6,0.8),numticks=12)
+    # plt.axes().xaxis.set_minor_locator(locmin)
+    # plt.axes().xaxis.set_minor_formatter(matplotlib.ticker.NullFormatter())
+    
     cbar = plt.colorbar()
-    cbar.set_label('Score')
+    cbar.set_label('Mean accuracy')
     cbar.set_ticks(np.linspace(0,1,11))
 
     plt.xlabel('C')
     plt.ylabel('$\gamma$') 
+    plt.tight_layout()
 
     if plot_max:
         max_scores = grid_search_log[grid_search_log[score_label] == grid_search_log[score_label].max()].copy()
-        plt.scatter(max_scores[x_label], max_scores[y_label], marker= 'x', color = 'red')
+        plt.scatter(max_scores[x_label], max_scores[y_label], marker= 'x', color = 'red', label = 'Max score')
+        plt.legend( loc = 'lower right')
 
     if save_figure:
         plt.tight_layout()
@@ -46,6 +56,21 @@ def plot_gridsearch_log(grid_search_log : pd.DataFrame, show_figure : bool = Fal
 
     if show_figure:
         plt.show()
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 def plot_gridsearch_gradient_log(grid_search_log : pd.DataFrame, show_figure : bool = False, save_figure : str = None, x_label : str = 'param_C', y_label : str = 'param_gamma', score_label : str = 'mean_test_score', plot_max : bool = False):
     """ function for plotting contour plot of the gradient of the grid search log
@@ -74,7 +99,7 @@ def plot_gridsearch_gradient_log(grid_search_log : pd.DataFrame, show_figure : b
 
     plt.xscale('log')
     plt.yscale('log')
-    cbar = plt.colorbar()
+    cbar = plt.colorbar(label = "Mean accuracy")
     cbar.set_label('Score')
     cbar.set_ticks(np.linspace(0,1,11))
 
