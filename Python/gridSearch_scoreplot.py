@@ -46,7 +46,7 @@ def plot_gridsearch_log(grid_search_log : pd.DataFrame, show_figure : bool = Fal
 
     if plot_max:
         max_scores = grid_search_log[grid_search_log[score_label] == grid_search_log[score_label].max()].copy()
-        plt.scatter(max_scores[x_label], max_scores[y_label], marker= 'x', color = 'red', label = 'Max score')
+        plt.scatter(max_scores[x_label], max_scores[y_label], marker= 'x', color = 'red', label = 'Max mean accuracy')
         plt.legend( loc = 'lower right')
 
     if save_figure:
