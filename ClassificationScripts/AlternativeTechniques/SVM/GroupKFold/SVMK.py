@@ -9,19 +9,19 @@ from sklearn import svm
 from sklearn.model_selection import GridSearchCV,GroupKFold
 from datetime import datetime
 
-'''
+
 import matplotlib.pyplot as plt
 plt.rcParams.update({
     "text.usetex": True,
     "font.family": "cmr"
 })
-'''
+
 
 from joblib import dump, load
 
 
 Print_figs=True
-Grid_search=True
+Grid_search=False
 
 
 # Load and standard scaling
@@ -78,7 +78,7 @@ if(Print_figs==True):
     clf_load = load(sys.path[0] +'/SVM.joblib')
 
     gridSearchLog = pd.read_json(sys.path[0] +"/SVM_GridSearchLog.json")
-    plot_gridsearch_log(gridSearchLog,plot_max=True,save_figure='SVM-GridResult.pdf')
+    plot_gridsearch_log(gridSearchLog, plot_max=True, save_figure='SVM-GridResult.pdf',fig_size=(4,3))
     print('Score plot saved')
 
     y_trn_predict = clf_load.predict(X_trn)
