@@ -74,6 +74,32 @@ class dataloader:
             X = data
             return dataloader(X,y)
 
+    def drop(self,args):
+
+        """Remove subset of data collection. Recommended to use a dictionary.
+        `data_dubset = data.drop({'target':[0,1,2],'setpoint' = 10 })`
+        """
+
+        data = pd.concat([self.X,self.y],axis='columns')
+
+        if type(args) == dict:
+            for each in args:
+                if type(args[each]) == list:
+                    for each2 in args[each]:
+                        data = data[data[each] != each2]
+                else:
+                    data = data[data[each] != args[each]]
+
+            y = data.pop('target')
+            X = data
+            return dataloader(X,y)
+
+        elif type(args) == list or type(args) == type(np.array([])) or type(args) == type(pd.Series()):
+            y = data.pop('target')
+            X = data
+            X = X.drop(args,axis=1)
+            return dataloader(X,y)
+
     def apply(self,fn):
         cols = self.X.columns
         X_applied = fn(self.X)
@@ -88,6 +114,8 @@ def feature_selection(clf,trn : dataloader ,vld : dataloader):
     summary = pd.DataFrame({'n_features':[],'score':[], 'features' : [], 'direction' : []})
     for n_features in range( 2, np.shape(trn.X.columns)[0] ):
         for direction in ["forward","backward"]:
+            
+            print(f"Doing features : {n_features} in direction {direction}")
             
             bw = SequentialFeatureSelector(clf, direction=direction, n_jobs=-1, n_features_to_select=n_features)
             bw.fit(trn.X, trn.y)
