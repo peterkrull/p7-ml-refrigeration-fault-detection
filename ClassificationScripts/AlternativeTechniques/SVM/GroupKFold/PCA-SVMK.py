@@ -47,7 +47,7 @@ y_vld=vld_data['target']
 y_tst=tst_data['target']
 
 
-pcaRed =  pca.PCA_reducer(pd.DataFrame(X_trn),3, scree_plot=True,save_name="ScreePlotGK.pdf",fig_size=(3,2.5))       #Preserve 91% of eigenvalues
+pcaRed =  pca.PCA_reducer(pd.DataFrame(X_trn),3, scree_plot=True,save_name="ScreePlotGK.pdf",fig_size=(2.5,2.5))       #Preserve 91% of eigenvalues
 X_trn_red = pcaRed.transform(pd.DataFrame(X_trn))
 X_vld_red = pcaRed.transform(pd.DataFrame(X_vld))
 X_tst_red = pcaRed.transform(pd.DataFrame(X_tst))
@@ -83,7 +83,7 @@ if(Print_figs==True):
     clf_load = load(sys.path[0] +"/PCA-SVMK.joblib")
 
     gridSearchLog = pd.read_json(sys.path[0] +"/PCA-SVMK_GridSearchLog.json")
-    plot_gridsearch_log(gridSearchLog,plot_max=True,save_figure='PCA-SVMK-GridResult.pdf',fig_size=(3,2.5))
+    plot_gridsearch_log(gridSearchLog,plot_max=True,save_figure='PCA-SVMK-GridResult.pdf',fig_size=(3.5,2.5))
     print('Score plot saved')
     
 

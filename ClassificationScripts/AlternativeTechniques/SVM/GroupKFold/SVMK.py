@@ -78,7 +78,7 @@ if(Print_figs==True):
     clf_load = load(sys.path[0] +'/SVM.joblib')
 
     gridSearchLog = pd.read_json(sys.path[0] +"/SVM_GridSearchLog.json")
-    plot_gridsearch_log(gridSearchLog, plot_max=True, save_figure='SVM-GridResult.pdf',fig_size=(4,3))
+    plot_gridsearch_log(gridSearchLog, plot_max=True, save_figure='SVM-GridResult.pdf',fig_size=(5,3))
     print('Score plot saved')
 
     y_trn_predict = clf_load.predict(X_trn)
