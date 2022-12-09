@@ -4,7 +4,7 @@ import matplotlib.pyplot as plt
 import sklearn.svm as svm
 from sklearn.model_selection import GridSearchCV, PredefinedSplit,GroupKFold
 import sys
-sys.path.append(sys.path[0] + "/../../../Python")
+sys.path.append(sys.path[0] + "/../../../../Python")
 import confusion_matrix2 as confusion_matrix
 import standardization 
 import lda
@@ -17,9 +17,9 @@ from joblib import dump, load
 #})
 
 #Load data
-trn_data = pd.read_csv(sys.path[0] + "/../../../TrainingData/neodata/14d_setpoints_1200.csv")
-vld_data = pd.read_csv(sys.path[0] + "/../../../ValidationData/neodata/14d_setpoints_1200.csv")
-tst_data = pd.read_csv(sys.path[0] + "/../../../TestData/neodata/14d_setpoints_100.csv")
+trn_data = pd.read_csv(sys.path[0] + "/../../../../TrainingData/neodata/14d_setpoints_1200.csv")
+vld_data = pd.read_csv(sys.path[0] + "/../../../../ValidationData/neodata/14d_setpoints_1200.csv")
+tst_data = pd.read_csv(sys.path[0] + "/../../../../TestData/neodata/14d_setpoints_100.csv")
 
 #Reduce amount of data, for convenience and time
 trn_data = trn_data

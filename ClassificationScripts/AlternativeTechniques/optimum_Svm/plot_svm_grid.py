@@ -6,15 +6,23 @@ import numpy as np
 from matplotlib import rc
 
 def plot_gridsearch_log(grid_search_log : pd.DataFrame, show_figure : bool = False, save_figure : str = None):
-    Z = np.zeros((len(data['param_C'].unique()), len(data['param_gamma'].unique())))
+    Z = np.zeros((len(grid_search_log['param_C'].unique()), len(grid_search_log['param_gamma'].unique())))
 
-    for x,i in enumerate(data['param_C'].unique()):
-        for y,j in enumerate(data['param_gamma'].unique()):
-            val = data.loc[(data['param_C'] == i) & (data['param_gamma'] == j)]
-            Z[x][y] = val['mean_test_score']
+    x_unique = grid_search_log['param_C'].unique()
+    y_unique = grid_search_log['param_gamma'].unique()
+    x_unique.sort()
+    y_unique.sort()
+
+    df = grid_search_log[['param_C', 'param_gamma', 'mean_test_score']].copy()
+    
+    df=df.pivot('param_gamma','param_C', 'mean_test_score')
+    gamma = df.index.values
+    C = df.columns.values
+    score = df.values
+    x,y=np.meshgrid(C, gamma)
 
     fig = plt.figure(figsize=(6,4))
-    plt.contourf(data['param_C'].unique(), data['param_gamma'].unique(), Z)
+    plt.contourf(x,y, score)
 
     plt.xscale('log')
     plt.yscale('log')
@@ -25,6 +33,7 @@ def plot_gridsearch_log(grid_search_log : pd.DataFrame, show_figure : bool = Fal
     plt.ylabel('$\gamma$') 
 
     if save_figure:
+        print("Saving figure")
         plt.savefig(save_figure)
 
     if show_figure:

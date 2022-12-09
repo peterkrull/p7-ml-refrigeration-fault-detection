@@ -1,2 +1,0 @@
- max accuracy: 0.8721866856195214
-best parameters:{'C': 100.0, 'decision_function_shape': 'ovo', 'gamma': 0.001, 'kernel': 'rbf'}
